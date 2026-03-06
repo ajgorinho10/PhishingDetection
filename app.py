@@ -1,40 +1,47 @@
 from xgboost import XGBClassifier
 import joblib
+from sklearn.feature_extraction.text import TfidfVectorizer
 from importData import ImportData
 import pandas as pd
+import xgboost as xgb
 
-class Detect:
+
+class NLPXGBoostScanner:
     def __init__(self):
-        self.model = None
-        self.loadModel()
 
-    def loadModel(self):
-        self.model = joblib.load("phishing_xgboost_model.pkl")
+        try:
+            self.vectorizer = joblib.load("models/vectorizer_tfidf.pkl")
+            self.cechy_nlp = self.vectorizer.get_feature_names_out()
+        except FileNotFoundError:
+            raise Exception("Błąd: Nie znaleziono pliku vectorizer_tfidf.pkl")
 
-    def predict(self,data):
-        data = data.lower()
-        x = ImportData()
+        try:
+            self.model = xgb.Booster()
+            self.model.load_model("models/phishing_NLPxgboost_model.json")
+        except xgb.core.XGBoostError:
+            raise Exception("Błąd: Nie znaleziono pliku!")
 
-        data = data.replace("https://", "")
-        data = data.replace("www.", "")
-        print(data)
 
-        dlugosc = x.get_url_length(data)
-        dlugosc = x.get_url_length(data)
-        kropki = x.count_dots(data)
-        myslniki = x.count_hyphens(data)
-        subdomeny = x.count_subdomains(data)
-        podejrzane_slowa = x.count_suspicious_keywords(data)
+    def skanuj_url(self, url):
 
-        nowe_dane = pd.DataFrame(
-            [[podejrzane_slowa, dlugosc, kropki, myslniki, subdomeny]],
-            columns=['suspicious_keywords_count', 'url_length', 'qty_dots', 'qty_hyphens', 'qty_subdomains']
-        )
+        url_features = self.vectorizer.transform([url])
+        dmatrix_url = xgb.DMatrix(url_features, feature_names=list(self.cechy_nlp))
+        prawdopodobienstwo = self.model.predict(dmatrix_url)[0]
 
-        print(nowe_dane)
+        print("=" * 60)
+        print(f"🔍 ANALIZOWANY ADRES: {url}")
+        print("=" * 60)
 
-        werdykt = self.model.predict(nowe_dane)[0]
-        pewnosc = self.model.predict_proba(nowe_dane)[0]
+        if prawdopodobienstwo > 0.5:
+            print(f"🚨 WERDYKT: ZŁOŚLIWY LINK (PHISHING)")
+            print(f"⚠️ Pewność modelu: {prawdopodobienstwo * 100:.2f}%")
+        else:
+            print(f"✅ WERDYKT: BEZPIECZNA STRONA")
+            print(f"🛡️ Prawdopodobieństwo zagrożenia: {prawdopodobienstwo * 100:.2f}%")
+        print("-" * 60)
 
-        print("Wynik:",werdykt)
 
+
+
+x = NLPXGBoostScanner()
+x.skanuj_url("https://www.phishing_NLPxgboost_model.json")

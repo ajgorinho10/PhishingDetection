@@ -7,6 +7,34 @@ import Levenshtein
 
 class ImportData:
     def __init__(self):
+        self.df = None
+        self.X = None
+        self.y = None
+        pass
+
+    def nlp(self):
+        df_ok = pd.read_csv('data/oksites.csv', names=['rank', 'url'])[['url']]
+        df_ok['label'] = 0
+
+        df_bad = pd.read_csv('data/badsites.csv', usecols=['url'])
+        df_bad['label'] = 1
+        df_bad['url'] = df_bad['url'].str.replace(r'^https?:\/\/', '', regex=True)
+        df_bad['url'] = df_bad['url'].str.replace(r'^www\.', '', regex=True)
+
+        df = pd.concat([df_ok, df_bad], ignore_index=True)
+        df = df.dropna(subset=['url']).drop_duplicates(subset=['url'])
+        df['url'] = df['url'].astype(str)
+
+        X = df['url']
+        y = df['label']
+
+        self.X = X
+        self.y = y
+        self.df = df
+
+        return X,y
+
+    def features_extraction(self):
         self.df = self.import_data()
 
         self.df = self.df.dropna(subset=['url'])
@@ -188,14 +216,6 @@ class ImportData:
         return entropy
 
 
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_colwidth', None)
 
 x = ImportData()
-
-#liczba_duplikatow = x.df.duplicated().sum()
-#print(f"⚠️ Znaleziono duplikatów w bazie: {liczba_duplikatow}")
-
-
-#print(x.df.head())
+x.nlp()
