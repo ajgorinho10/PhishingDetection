@@ -20,7 +20,7 @@ class PhishingScanner:
             print("✅ System gotowy do działania!\n")
         except FileNotFoundError as e:
             print(f"❌ Błąd: Nie znaleziono plików w folderze 'models/'! Szczegóły: {e}")
-            print("Upewnij się, że wytrenowałeś i zapisałeś model w trainModel.py.")
+            print("Upewnij się, że wytrenowałeś i zapisałeś model w Drzewa.py.")
             exit()
 
     def clean_url(self, url):

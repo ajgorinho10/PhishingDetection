@@ -63,6 +63,36 @@ class ImportData:
         return X, y
 
 
+    def Get_Scalet_sets(self):
+        self.Import_set_1()
+        data1 = self.df
+
+        self.Import_set_2()
+        data2 = self.df
+
+        data = pd.concat([data1, data2], ignore_index=True)
+        data = data.sample(frac=1, random_state=42).reset_index(drop=True)
+
+        data = data.dropna(subset=['url']).drop_duplicates(subset=['url'])
+        data['url'] = data['url'].astype(str)
+
+        X = data['url']
+        y = data['label']
+
+        return X, y
+
+    def scal_sets(self):
+        self.read_set_1()
+        x1 = self.df
+
+        self.read_set_2()
+        x2 = self.df
+
+        df = pd.concat([x1,x2], ignore_index=True)
+
+        return df
+
+
 if __name__ == "__main__":
     x = ImportData()
     x.Import_set_2()
