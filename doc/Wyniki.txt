@@ -1,0 +1,80 @@
+Drzewa:
+    RandomForest:
+                NLP(FTIDF)
+                        precision    recall  f1-score   support
+
+                 0.0       0.97      0.98      0.97    103680
+                 1.0       0.94      0.94      0.94     45557
+
+                Cechy
+
+    xgboost:
+                NLP(FTIDF)
+                Cechy
+
+
+
+MLP{
+    SciLearn:
+                NLP(FTIDF)(100->1):
+                                    precision   recall   f1-score  support
+
+                               0       0.97      0.98      0.97     68999
+                               1       0.95      0.93      0.94     30486
+
+                        accuracy                           0.96     99485
+                       macro avg       0.96      0.95      0.96     99485
+                    weighted avg       0.96      0.96      0.96     99485
+
+                        Macierz Pomyłek:
+                        [[67460  1539]
+                         [ 2212 28274]]
+
+
+               Cechy(10->5):
+                                  precision    recall  f1-score   support
+
+                               0       0.80      0.94      0.86     68999
+                               1       0.77      0.47      0.58     30486
+
+                        accuracy                           0.79     99485
+                       macro avg       0.78      0.70      0.72     99485
+                    weighted avg       0.79      0.79      0.78     99485
+
+
+                    Macierz Pomyłek (Confusion Matrix):
+                    [[64631  4368]
+                     [16232 14254]]
+
+
+
+    PyTourch:
+                NLP(FTIDF)(256->64->1):
+                                  precision    recall  f1-score   support
+
+                             0.0       0.97      0.98      0.97    103680
+                             1.0       0.94      0.93      0.94     45557
+
+                        accuracy                           0.96    149237
+                       macro avg       0.96      0.95      0.96    149237
+                    weighted avg       0.96      0.96      0.96    149237
+
+                    Macierz Pomyłek:
+                    [[101103   2577]
+                     [  2974  42583]]
+
+
+                Cechy(256->64->1):
+                                  precision    recall  f1-score   support
+
+                             0.0       0.81      0.94      0.87    103611
+                             1.0       0.78      0.51      0.62     45616
+
+                        accuracy                           0.81    149227
+                       macro avg       0.80      0.72      0.74    149227
+                    weighted avg       0.80      0.81      0.79    149227
+
+                    Macierz Pomyłek:
+                    [[97208  6403]
+                     [22451 23165]]
+}

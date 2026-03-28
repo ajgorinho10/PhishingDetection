@@ -12,7 +12,7 @@ class ImportSet2:
         pass
 
     def path_to_files(self):
-        katalog_glowny = Path(__file__).resolve().parent.parent
+        katalog_glowny = Path(__file__).resolve().parent.parent.parent
 
         self.ok_data_path = katalog_glowny / "data/set_2/raw/URLdataset.csv"
         self.bad_data_path = katalog_glowny / "data/set_2/raw/PhishingURLs.csv"

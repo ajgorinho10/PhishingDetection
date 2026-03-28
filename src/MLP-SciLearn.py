@@ -1,15 +1,11 @@
-import pandas as pd
 
 from sklearn.neural_network import MLPClassifier
-
 from sklearn.model_selection import train_test_split
-
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score
-
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from importData import ImportData
+from Set_Processor import ImportData
 
 
 class MLP:
@@ -17,20 +13,17 @@ class MLP:
         self.df = None
         self.X = None
         self.y = None
-        #self.import_data()
-        self.import_data_NLP()
 
     def import_data(self):
         data = ImportData()
-        data.read_set_2()
-        self.df = data.df
+        self.df,self.X,self.y = data.scal_sets()
 
     def import_data_NLP(self):
         data = ImportData()
-        data.read_set_2()
-        self.X, self.y = data.Get_NLP()
+        self.X, self.y = data.Get_Scalet_sets()
 
     def run_model(self):
+        self.import_data()
         x_df = self.df.drop(columns=['label','url'])
         y_df = self.df['label']
 
@@ -41,13 +34,13 @@ class MLP:
         X_test_scaled = scaler.transform(X_test)
 
         mlp = MLPClassifier(
-            hidden_layer_sizes=(11, 5),
+            hidden_layer_sizes=(10, 5),
             activation='relu',
             solver='adam',
             alpha=0.0001,
             early_stopping=True,
             random_state=42,
-            verbose=True  # Wyświetli w konsoli postęp treningu każdej "epoki"
+            verbose=True
         )
 
         mlp.fit(X_train_scaled, y_train)
@@ -63,6 +56,7 @@ class MLP:
         print(confusion_matrix(y_test, y_pred))
 
     def run_model_NLP(self):
+        self.import_data_NLP()
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.2, random_state=42)
 
         vectorizer = TfidfVectorizer(analyzer='char', ngram_range=(3, 5), max_features=3000)

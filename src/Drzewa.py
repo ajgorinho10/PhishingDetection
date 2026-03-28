@@ -14,7 +14,7 @@ import joblib
 import pandas as pd
 from pathlib import Path
 
-from importData import ImportData
+from src.Set_Processor.importData import ImportData
 
 class TrainModel:
     def __init__(self):
@@ -24,31 +24,17 @@ class TrainModel:
 
         self.path_models = Path(__file__).resolve().parent.parent / "models"
 
-        #self.import_data()
-        self.NLP_import_data()
+        self.import_data()
+        #self.NLP_import_data()
 
     def import_data(self):
-        self.df, self.X, self.y = ImportData().read_set_2()
+        self.df,self.X, self.y = ImportData().scal_sets()
 
     def NLP_import_data(self):
         x = ImportData()
         x.Import_set_2()
 
         self.X, self.y = x.Get_Scalet_sets()
-
-    def native_bayes(self):
-        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.2, random_state=42)
-        gnb = GaussianNB()
-        y_pred = gnb.fit(X_train, y_train).predict(X_test)
-
-        skutecznosc = accuracy_score(y_test, y_pred)
-        print(f"Skuteczność modelu (Accuracy): {skutecznosc * 100:.2f}%")
-
-        print("\nSzczegółowy raport:")
-        print(classification_report(y_test, y_pred))
-
-        print("\nMacierz Pomyłek (Confusion Matrix):")
-        print(confusion_matrix(y_test, y_pred))
 
     def train_RandomForest(self,save = False):
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.2, random_state=42)
@@ -155,34 +141,6 @@ class TrainModel:
 
         print("\nZakończono! Najlepsze hiperparametry to:")
         print(best_params)
-
-    def train_linear(self):
-        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.2, random_state=42)
-
-        scaler = StandardScaler()
-        X_train_scaled = scaler.fit_transform(X_train)
-        X_test_scaled = scaler.transform(X_test)
-
-        linear_model = LogisticRegression(max_iter=2000, random_state=42, class_weight='balanced')
-        linear_model.fit(X_train_scaled, y_train)
-
-        y_pred = linear_model.predict(X_test_scaled)
-
-        print("\n" + "=" * 50)
-        print("RAPORT: REGRESJA LOGISTYCZNA (MODEL LINIOWY)")
-        print("=" * 50)
-        print(classification_report(y_test, y_pred))
-        print("Macierz Pomyłek:")
-        print(confusion_matrix(y_test, y_pred))
-
-        print("\n🔍 WSPÓŁCZYNNIKI (Coefficients) MODELU LINIOWEGO:")
-        print("(Liczby dodatnie pchają wynik w stronę phishingu, ujemne w stronę bezpiecznej strony)")
-        wspolczynniki = pd.DataFrame({
-            'Cecha': self.X.columns,
-            'Waga': linear_model.coef_[0]
-        })
-        wspolczynniki = wspolczynniki.reindex(wspolczynniki.Waga.abs().sort_values(ascending=False).index)
-        print(wspolczynniki.to_string(index=False))
 
     def NLP_RandomForest(self):
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.2, random_state=42)
@@ -344,13 +302,13 @@ class TrainModel:
 if __name__ == "__main__":
     trainModel = TrainModel()
     #trainModel.findParametersXGBoost()
-    #trainModel.train_XGBoost(save = False)
-    #trainModel.train_RandomForest(save=True)
+    trainModel.train_XGBoost(save = False)
+    #trainModel.train_RandomForest(save=False)
 
     #trainModel.train_linear()
     #trainModel.native_bayes()
 
     #trainModel.NLP_RandomForest()
-    trainModel.NLP_XGBoost(True)
+    #trainModel.NLP_XGBoost(False)
     #trainModel.NLP_XGBoost_find_parameters()
 

@@ -1,8 +1,8 @@
 import pandas as pd
 
-from Features_Extraction import FeaturesExtraction
-from Import_Set_1 import ImportSet1
-from Import_Set_2 import ImportSet2
+from src.Set_Processor.Features_Extraction import FeaturesExtraction
+from src.Set_Processor.Import_Set_1 import ImportSet1
+from src.Set_Processor.Import_Set_2 import ImportSet2
 
 
 class ImportData:
@@ -90,7 +90,10 @@ class ImportData:
 
         df = pd.concat([x1,x2], ignore_index=True)
 
-        return df
+        self.X = df.drop(columns=['url', 'label'])
+        self.y = df['label']
+
+        return df,self.X,self.y
 
 
 if __name__ == "__main__":
