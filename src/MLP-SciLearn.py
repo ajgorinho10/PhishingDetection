@@ -16,11 +16,12 @@ class MLP:
 
     def import_data(self):
         data = ImportData()
-        self.df,self.X,self.y = data.scal_sets()
+        self.df,self.X,self.y = data.read_set_3()
 
     def import_data_NLP(self):
         data = ImportData()
-        self.X, self.y = data.Get_Scalet_sets()
+        data.Import_set_3()
+        self.X, self.y = data.Get_NLP()
 
     def run_model(self):
         self.import_data()
@@ -73,6 +74,7 @@ class MLP:
             verbose=True
         )
 
+        print("Trenowanie...")
         mlp_nlp.fit(X_train_nlp, y_train.values)
 
         y_pred = mlp_nlp.predict(X_test_nlp)

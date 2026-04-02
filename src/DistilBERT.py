@@ -102,5 +102,7 @@ def train_transformer_pipeline(X_data, y_data):
     print(confusion_matrix(y_test, y_pred))
 
 if __name__ == "__main__":
-    X, y = ImportData().Get_Scalet_sets()
+    d = ImportData()
+    d.Import_set_3()
+    X, y = d.Get_NLP()
     train_transformer_pipeline(X, y)

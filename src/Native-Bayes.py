@@ -16,12 +16,14 @@ class NaiveBayes:
 
     def import_data(self):
         x = ImportData()
-        self.df,self.X, self.y = x.scal_sets()
+
+        self.df,self.X, self.y = x.read_set_3()
         pass
 
     def import_data_nlp(self):
         x = ImportData()
-        self.X,self.y = x.Get_Scalet_sets()
+        x.Import_set_3()
+        self.X,self.y = x.Get_NLP()
         pass
 
     def train_nlp(self):
@@ -74,5 +76,5 @@ class NaiveBayes:
 
 if __name__ == "__main__":
     nb = NaiveBayes()
-    nb.train()
-    #nb.train_nlp()
+    #nb.train()
+    nb.train_nlp()

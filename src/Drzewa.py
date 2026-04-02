@@ -1,10 +1,7 @@
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
 import xgboost as xgb
@@ -28,13 +25,14 @@ class TrainModel:
         #self.NLP_import_data()
 
     def import_data(self):
-        self.df,self.X, self.y = ImportData().scal_sets()
+        x = ImportData()
+        self.df,self.X, self.y = x.read_set_3()
 
     def NLP_import_data(self):
         x = ImportData()
-        x.Import_set_2()
+        x.Import_set_3()
 
-        self.X, self.y = x.Get_Scalet_sets()
+        self.X, self.y = x.Get_NLP()
 
     def train_RandomForest(self,save = False):
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.2, random_state=42)
@@ -194,7 +192,7 @@ class TrainModel:
         print("Przygotowywanie danych")
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=0.3, random_state=42)
 
-        vectorizer = TfidfVectorizer(analyzer='char', ngram_range=(3, 5), max_features=10000)
+        vectorizer = TfidfVectorizer(analyzer='char', ngram_range=(3, 5), max_features=3000)
         X_train_nlp = vectorizer.fit_transform(X_train)
         X_test_nlp = vectorizer.transform(X_test)
 
@@ -305,8 +303,6 @@ if __name__ == "__main__":
     trainModel.train_XGBoost(save = False)
     #trainModel.train_RandomForest(save=False)
 
-    #trainModel.train_linear()
-    #trainModel.native_bayes()
 
     #trainModel.NLP_RandomForest()
     #trainModel.NLP_XGBoost(False)

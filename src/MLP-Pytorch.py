@@ -169,8 +169,8 @@ class PyTorchTrainer:
 
 if __name__ == "__main__":
     dane = ImportData()
-    #df, X, y = dane.scal_sets()
-    X, y = dane.Get_Scalet_sets()
+    dane.Import_set_3()
+    X, y = dane.Get_NLP()
 
     trener_pt = PyTorchTrainer(X, y)
     trener_pt.NLP_train()

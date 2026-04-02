@@ -150,5 +150,7 @@ def train_LSTM_sequence(X_data, y_data):
 
 # Wywołanie:
 if __name__ == "__main__":
-    X, y = ImportData().Get_Scalet_sets()
+    d = ImportData()
+    d.Import_set_3()
+    X, y = d.Get_NLP()
     train_LSTM_sequence(X, y)

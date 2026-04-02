@@ -1,8 +1,9 @@
 import pandas as pd
 
-from src.Set_Processor.Features_Extraction import FeaturesExtraction
-from src.Set_Processor.Import_Set_1 import ImportSet1
-from src.Set_Processor.Import_Set_2 import ImportSet2
+from .Features_Extraction import FeaturesExtraction
+from .Import_Set_1 import ImportSet1
+from .Import_Set_2 import ImportSet2
+from .Import_Set_3 import ImportSet3
 
 
 class ImportData:
@@ -14,6 +15,7 @@ class ImportData:
         self.path_to_save = None
         self.set1 = ImportSet1()
         self.set2 = ImportSet2()
+        self.set3 = ImportSet3()
         pass
 
     def Import_set_1(self):
@@ -33,6 +35,17 @@ class ImportData:
 
     def read_set_2(self):
         self.df = pd.read_csv(self.set2.processed_path)
+        self.X = self.df.drop(columns=['url', 'label'])
+        self.y = self.df['label']
+
+        return self.df, self.X, self.y
+
+    def Import_set_3(self):
+        self.df = self.set3.import_data()
+        self.path_to_save = self.set3.processed_path
+
+    def read_set_3(self):
+        self.df = pd.read_csv(self.set3.processed_path)
         self.X = self.df.drop(columns=['url', 'label'])
         self.y = self.df['label']
 
@@ -63,41 +76,8 @@ class ImportData:
         return X, y
 
 
-    def Get_Scalet_sets(self):
-        self.Import_set_1()
-        data1 = self.df
-
-        self.Import_set_2()
-        data2 = self.df
-
-        data = pd.concat([data1, data2], ignore_index=True)
-        data = data.sample(frac=1, random_state=42).reset_index(drop=True)
-
-        data = data.dropna(subset=['url']).drop_duplicates(subset=['url'])
-        data['url'] = data['url'].astype(str)
-
-        X = data['url']
-        y = data['label']
-
-        return X, y
-
-    def scal_sets(self):
-        self.read_set_1()
-        x1 = self.df
-
-        self.read_set_2()
-        x2 = self.df
-
-        df = pd.concat([x1,x2], ignore_index=True)
-
-        self.X = df.drop(columns=['url', 'label'])
-        self.y = df['label']
-
-        return df,self.X,self.y
-
-
 if __name__ == "__main__":
     x = ImportData()
-    x.Import_set_2()
+    x.Import_set_3()
     x.Extract_features()
     print(x.df.head())

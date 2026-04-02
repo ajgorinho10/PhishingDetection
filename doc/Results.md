@@ -36,16 +36,16 @@
 ```text
                                       precision    recall  f1-score   support
                         
-                                   0       0.96      0.99      0.98    402885
-                                   1       0.93      0.75      0.83     58878
+                                   0       0.93      0.96      0.94    128378
+                                   1       0.95      0.92      0.93    110106
                         
-                            accuracy                           0.96    461763
-                           macro avg       0.95      0.87      0.91    461763
-                        weighted avg       0.96      0.96      0.96    461763
+                            accuracy                           0.94    238484
+                           macro avg       0.94      0.94      0.94    238484
+                        weighted avg       0.94      0.94      0.94    238484
                         
                         Macierz Pomyłek:
-                        [[399748   3137]
-                         [ 14673  44205]]
+                        [[122747   5631]
+                         [  8847 101259]]
 ```
 
 ### CECHY
@@ -106,33 +106,33 @@
 ```text
                                       precision    recall  f1-score   support
                         
-                                   0       0.98      0.99      0.99    402885
-                                   1       0.94      0.88      0.91     58878
+                                   0       0.97      0.94      0.95    128378
+                                   1       0.93      0.96      0.95    110106
                         
-                            accuracy                           0.98    461763
-                           macro avg       0.96      0.94      0.95    461763
-                        weighted avg       0.98      0.98      0.98    461763
+                            accuracy                           0.95    238484
+                           macro avg       0.95      0.95      0.95    238484
+                        weighted avg       0.95      0.95      0.95    238484
                         
                         Macierz Pomyłek:
-                        [[399636   3249]
-                         [  7116  51762]]
+                        [[120436   7942]
+                         [  4324 105782]]
 ```
 
 ### CECHY
 ```text
                                       precision    recall  f1-score   support
                         
-                                   0       0.95      0.95      0.95    269171
-                                   1       0.66      0.64      0.65     41441
+                                   0       0.86      0.62      0.72     73593
+                                   1       0.73      0.92      0.82     85396
                         
-                            accuracy                           0.91    310612
-                           macro avg       0.80      0.80      0.80    310612
-                        weighted avg       0.91      0.91      0.91    310612
+                            accuracy                           0.78    158989
+                           macro avg       0.80      0.77      0.77    158989
+                        weighted avg       0.79      0.78      0.77    158989
                         
                         
                         Macierz Pomyłek (XGBoost):
-                        [[255438  13733]
-                         [ 14777  26664]]
+                        [[45302 28291]
+                         [ 7179 78217]]
 ```
 
 
@@ -142,16 +142,16 @@
 ```text
                                   precision    recall  f1-score   support
                     
-                               0       0.98      0.99      0.99    268465
-                               1       0.96      0.87      0.91     39377
+                               0       0.96      0.97      0.96     85396
+                               1       0.96      0.95      0.96     73593
                     
-                        accuracy                           0.98    307842
-                       macro avg       0.97      0.93      0.95    307842
-                    weighted avg       0.98      0.98      0.98    307842
+                        accuracy                           0.96    158989
+                       macro avg       0.96      0.96      0.96    158989
+                    weighted avg       0.96      0.96      0.96    158989
                     
                     Macierz Pomyłek:
-                    [[266857   1608]
-                     [  5169  34208]]
+                    [[82781  2615]
+                     [ 3392 70201]]
 ```
 
 ### CECHY (10->5->1)
@@ -176,16 +176,16 @@
 ```text
                                   precision    recall  f1-score   support
                     
-                             0.0       0.98      0.99      0.99    402885
-                             1.0       0.95      0.88      0.92     58878
+                             0.0       0.97      0.97      0.97    128378
+                             1.0       0.96      0.96      0.96    110106
                     
-                        accuracy                           0.98    461763
-                       macro avg       0.97      0.94      0.95    461763
-                    weighted avg       0.98      0.98      0.98    461763
+                        accuracy                           0.97    238484
+                       macro avg       0.97      0.97      0.97    238484
+                    weighted avg       0.97      0.97      0.97    238484
                     
                     Macierz Pomyłek:
-                    [[400068   2817]
-                     [  6828  52050]]
+                    [[124224   4154]
+                     [  4096 106010]]
 ```
 
 ### CECHY (256->64->16->1)
@@ -209,45 +209,45 @@ Typ danych: Tokenizacja
 ## PyTorch
 ```text
                                   precision    recall  f1-score   support
+                                     
+                             0.0       0.98      0.99      0.98    128378                
+                             1.0       0.98      0.97      0.98    110106
                     
-                             0.0       0.99      0.99      0.99    402885
-                             1.0       0.96      0.91      0.94     58878
-                    
-                        accuracy                           0.98    461763
-                       macro avg       0.97      0.95      0.96    461763
-                    weighted avg       0.98      0.98      0.98    461763
+                        accuracy                           0.98    238484                 
+                       macro avg       0.98      0.98      0.98    238484                   
+                    weighted avg       0.98      0.98      0.98    238484
                     
                     Macierz Pomyłek:
-                    [[400579   2306]
-                     [  5057  53821]]
+                    [[126659   1719]
+                     [  3080 107026]]
 ```
 
 # Bi-LSTM
 ```text
                                   precision    recall  f1-score   support
                     
-                             0.0       0.99      1.00      0.99    402885
-                             1.0       0.98      0.95      0.96     58878
+                             0.0       0.98      0.98      0.98    128378
+                             1.0       0.98      0.97      0.98    110106
                     
-                        accuracy                           0.99    461763
-                       macro avg       0.98      0.97      0.98    461763
-                    weighted avg       0.99      0.99      0.99    461763
+                        accuracy                           0.98    238484
+                       macro avg       0.98      0.98      0.98    238484
+                    weighted avg       0.98      0.98      0.98    238484
                     
                     Macierz Pomyłek:
-                    [[401578   1307]
-                     [  3099  55779]]
+                    [[126217   2161]
+                     [  2874 107232]]
 
 ```
 
 # DistilBERT
 transformer-based language models
 ```text
-F1-Score:  0.9763
-Precision: 0.9867
-Recall:    0.9662
+F1-Score:  0.9851
+Precision: 0.9898
+Recall:    0.9805
 
 
 MACIERZ POMYŁEK (TRANSFORMER):
-[[402121    764]
- [  1993  56885]]
+[[127269   1109]
+ [  2149 107957]]
 ```

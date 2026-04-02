@@ -23,7 +23,7 @@ class CNN(nn.Module):
         self.pool = nn.MaxPool1d(kernel_size=2)
 
         # Ochrona przed przeuczeniem
-        self.dropout = nn.Dropout(0.5)
+        self.dropout = nn.Dropout(0.3)
 
         # Klasyfikator końcowy (MLP na końcu sieci)
         self.fc = nn.Linear(128 * (max_len // 2), 1)
@@ -62,7 +62,7 @@ def train_CNN_sequence(X_data, y_data):
 
     char_to_int = {c: i + 1 for i, c in enumerate(unikalne_znaki)}
     vocab_size = len(char_to_int) + 1
-    max_len = 100
+    max_len = 300
 
     X_sequences = []
     for url in X_data:
@@ -91,10 +91,11 @@ def train_CNN_sequence(X_data, y_data):
     # --- KROK 4: Inicjalizacja modelu ---
     model = CNN(vocab_size=vocab_size, max_len=max_len).to(device)
     criterion = nn.BCEWithLogitsLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    #optimizer = optim.Adam(model.parameters(), lr=0.002)
+    optimizer = optim.SGD(model.parameters(),lr=0.01,momentum=0.9)
 
     # --- KROK 5: Pętla ucząca ---
-    epochs = 15
+    epochs = 10
     print("\nRozpoczynamy trening sieci CNN...")
     start_time = time.time()
 
@@ -152,5 +153,7 @@ def train_CNN_sequence(X_data, y_data):
 
 
 if __name__ == "__main__":
-    X,y = ImportData().Get_Scalet_sets()
+    d = ImportData()
+    d.Import_set_3()
+    X, y = d.Get_NLP()
     train_CNN_sequence(X, y)
