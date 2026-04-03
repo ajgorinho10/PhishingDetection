@@ -5,8 +5,8 @@ class ImportSet2:
     def __init__(self):
         self.df = None
 
-        self.ok_data_path = None
-        self.bad_data_path = None
+        self.data1_path = None
+        self.data2_path = None
         self.processed_path = None
         self.path_to_files()
         pass
@@ -14,26 +14,26 @@ class ImportSet2:
     def path_to_files(self):
         katalog_glowny = Path(__file__).resolve().parent.parent.parent
 
-        self.ok_data_path = katalog_glowny / "data/set_2/raw/URLdataset.csv"
-        self.bad_data_path = katalog_glowny / "data/set_2/raw/PhishingURLs.csv"
+        self.data1_path = katalog_glowny / "data/set_2/raw/URLdataset.csv"
+        self.data2_path = katalog_glowny / "data/set_2/raw/PhishingURLs.csv"
         self.processed_path = katalog_glowny / "data/set_2/processed/set2.csv"
 
     def import_data(self):
-        df_ok = pd.read_csv(self.ok_data_path, names=['url', 'type'])
-        df_ok = df_ok.drop(index=0)
+        df_data1 = pd.read_csv(self.data1_path, names=['url', 'type'])
+        df_data1 = df_data1.drop(index=0)
 
-        df_ok['label'] = df_ok['type'].apply(lambda x: 0 if x == 'legitimate' else 1)
-        df_ok = df_ok.drop(columns=['type'])
-
-
-        df_bad = pd.read_csv(self.bad_data_path, usecols=['url','Type'])
-        df_bad = df_bad.drop(index=0)
-
-        df_bad['label'] = df_bad['Type'].apply(lambda x: 0 if x == 'legitimate' else 1)
-        df_bad = df_bad.drop(columns=['Type'])
+        df_data1['label'] = df_data1['type'].apply(lambda x: 0 if x == 'legitimate' else 1)
+        df_data1 = df_data1.drop(columns=['type'])
 
 
-        df = pd.concat([df_ok, df_bad], ignore_index=True)
+        df_data2 = pd.read_csv(self.data2_path, usecols=['url','Type'])
+        df_data2 = df_data2.drop(index=0)
+
+        df_data2['label'] = df_data2['Type'].apply(lambda x: 0 if x == 'legitimate' else 1)
+        df_data2 = df_data2.drop(columns=['Type'])
+
+
+        df = pd.concat([df_data1, df_data2], ignore_index=True)
 
         df['url'] = df['url'].astype(str)
         df['url'] = df['url'].str.replace(r'^https?:\/\/', '', regex=True)

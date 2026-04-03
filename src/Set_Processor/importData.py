@@ -4,6 +4,7 @@ from .Features_Extraction import FeaturesExtraction
 from .Import_Set_1 import ImportSet1
 from .Import_Set_2 import ImportSet2
 from .Import_Set_3 import ImportSet3
+from .Import_Set_5 import ImportSet5
 
 
 class ImportData:
@@ -16,6 +17,7 @@ class ImportData:
         self.set1 = ImportSet1()
         self.set2 = ImportSet2()
         self.set3 = ImportSet3()
+        self.set5 = ImportSet5()
         pass
 
     def Import_set_1(self):
@@ -46,6 +48,17 @@ class ImportData:
 
     def read_set_3(self):
         self.df = pd.read_csv(self.set3.processed_path)
+        self.X = self.df.drop(columns=['url', 'label'])
+        self.y = self.df['label']
+
+        return self.df, self.X, self.y
+    
+    def Import_set_5(self):
+        self.df = self.set5.import_data()
+        self.path_to_save = self.set5.processed_path
+
+    def read_set_5(self):
+        self.df = pd.read_csv(self.set5.processed_path)
         self.X = self.df.drop(columns=['url', 'label'])
         self.y = self.df['label']
 

@@ -1,1 +1,4 @@
-wyniki_transformer
+.idea
+.venv
+.vscode
+.__pycache__
