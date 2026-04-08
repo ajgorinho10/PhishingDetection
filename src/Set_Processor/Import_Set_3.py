@@ -1,5 +1,6 @@
 from pathlib import Path
 import pandas as pd
+import csv
 
 class ImportSet3:
     def __init__(self):
@@ -17,10 +18,27 @@ class ImportSet3:
         self.processed_path = katalog_glowny / "data/set_3/processed/set3.csv"
 
     def import_data(self):
-        df = pd.read_csv(self.data_path, names=['url', 'status'], dtype={'url': str, 'status': str})
-        df = df.drop(index=0)
+        parsed_data = []
+        
+        # 1. Bezpieczny odczyt pliku linia po linii (ignoruje błędy kodowania bajtów)
+        with open(self.data_path, 'r', encoding='utf-8', errors='replace') as f:
+            lines = f.readlines()
+
+        # 2. Ręczny podział od prawej strony (z pominięciem nagłówka w pierwszej linii)
+        for line in lines[1:]:
+            line = line.strip()
+            if not line:
+                continue
+            
+            parts = line.rsplit(',', 1)
+            if len(parts) == 2:
+                parsed_data.append(parts)
+
+        # 3. Konwersja do DataFrame
+        df = pd.DataFrame(parsed_data, columns=['url', 'status'])
+        
         df = df.rename(columns={'status': 'label'})
-        df['label'] = df['label'].apply(lambda x : 1 if x == '0' else 0)
+        df['label'] = df['label'].apply(lambda x : 1 if str(x).strip() == '0' else 0)
 
 
         df.drop_duplicates(subset=['url'], inplace=True)

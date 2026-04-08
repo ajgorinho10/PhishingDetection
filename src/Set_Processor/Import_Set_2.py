@@ -1,5 +1,6 @@
 from pathlib import Path
 import pandas as pd
+import csv
 
 class ImportSet2:
     def __init__(self):
@@ -17,19 +18,36 @@ class ImportSet2:
         self.data1_path = katalog_glowny / "data/set_2/raw/URLdataset.csv"
         self.data2_path = katalog_glowny / "data/set_2/raw/PhishingURLs.csv"
         self.processed_path = katalog_glowny / "data/set_2/processed/set2.csv"
+        
+    def import_csv(self,path, cloumns):
+        parsed_data = []
+        
+        # 1. Bezpieczny odczyt pliku linia po linii (ignoruje błędy kodowania bajtów)
+        with open(path, 'r', encoding='utf-8', errors='replace') as f:
+            lines = f.readlines()
+
+        # 2. Ręczny podział od prawej strony (z pominięciem nagłówka w pierwszej linii)
+        for line in lines[1:]:
+            line = line.strip()
+            if not line:
+                continue
+            
+            parts = line.rsplit(',', 1)
+            if len(parts) == 2:
+                parsed_data.append(parts)
+
+        # 3. Konwersja do DataFrame
+        df = pd.DataFrame(parsed_data, columns=cloumns)
+        
+        return df
 
     def import_data(self):
-        df_data1 = pd.read_csv(self.data1_path, names=['url', 'type'])
-        df_data1 = df_data1.drop(index=0)
-
-        df_data1['label'] = df_data1['type'].apply(lambda x: 0 if x == 'legitimate' else 1)
+        df_data1 = self.import_csv(self.data1_path, ['url', 'type'])
+        df_data1['label'] = df_data1['type'].apply(lambda x: 0 if str(x).strip().lower() == 'legitimate' else 1)
         df_data1 = df_data1.drop(columns=['type'])
 
-
-        df_data2 = pd.read_csv(self.data2_path, usecols=['url','Type'])
-        df_data2 = df_data2.drop(index=0)
-
-        df_data2['label'] = df_data2['Type'].apply(lambda x: 0 if x == 'legitimate' else 1)
+        df_data2 = self.import_csv(self.data2_path,['url','Type'])
+        df_data2['label'] = df_data2['Type'].apply(lambda x: 0 if str(x).strip().lower() == 'legitimate' else 1)
         df_data2 = df_data2.drop(columns=['Type'])
 
 

@@ -18,10 +18,16 @@ class CharTokenizer:
         self.vocab_size = len(chars) + 2  # +PAD +UNK
 
     def encode(self, url: str) -> List[int]:
-        """URL → lista indeksów, obcięta/dopełniona do max_len."""
-        url = url[:self.max_len]
+        """URL → lista indeksów. Przy przekroczeniu max_len wycina środek."""
+        if len(url) > self.max_len:
+            # Zostawia np. pierwsze 40 znaków i resztę uzupełnia końcówką
+            keep_front = 40
+            keep_back = self.max_len - keep_front
+            url = url[:keep_front] + url[-keep_back:]
+            
+        url = url.lower()
         ids = [self.char2idx.get(c, cfg.UNK_IDX) for c in url]
-        # padding po prawej
+        # Padding po prawej
         ids += [cfg.PAD_IDX] * (self.max_len - len(ids))
         return ids
     

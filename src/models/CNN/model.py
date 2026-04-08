@@ -32,14 +32,13 @@ class CNNBlocks(nn.Module):
             )
         
         
-        self.attention = nn.Sequential(
-            SqueezeExcitation(out_dim, 4),
-            SpatialAttention()
-        )
+        self.se = SqueezeExcitation(out_dim, 4)
+        self.sa = SpatialAttention()
         
-    def forward(self, x):
+    def forward(self, x, mask=None):
         x = self.conv(x)
-        x = self.attention(x)
+        x = self.se(x, mask)
+        x = self.sa(x, mask)
         
         return F.relu(x)
 

@@ -81,8 +81,8 @@ class Trainer:
         #       train = 1 500 000
         #         val = 1 500 000
         
-        X_train_val, X_test, y_train_val, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-        X_train, X_val, y_train, y_val           = train_test_split(X_train_val, y_train_val, test_size=0.3, random_state=42)
+        X_train, X_test_val, y_train, y_test_val = train_test_split(X, y, test_size=0.3, random_state=42)
+        X_test, X_val, y_test, y_val           = train_test_split(X_test_val, y_test_val, test_size=0.5, random_state=42)
          
         train_loader    = self.get_data_loaders(*self.get_tokenized_tensors(X_train, y_train), shuffled = True)
         val_loader      = self.get_data_loaders(*self.get_tokenized_tensors(X_val, y_val))
@@ -123,9 +123,9 @@ class Trainer:
                 output = self.model(batch_X)
                 loss = self.loss_f(output, batch_y)
                 running_val_loss += loss.item()
-                        
-                running_labels.extend(batch_y.cpu().numpy())
-                running_predicts.extend(torch.sigmoid(output).round().cpu().numpy())
+
+                running_labels.extend(batch_y.cpu().numpy().flatten())
+                running_predicts.extend(torch.sigmoid(output).squeeze(-1).round().cpu().numpy())
                         
             metrics['val_loss'] = running_val_loss / len(data_loader)
             metrics['f1']       = f1_score      (running_labels,running_predicts, zero_division = 0)
