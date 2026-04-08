@@ -2,6 +2,7 @@ from pathlib import Path
 import pandas as pd
 import csv
 
+#https://www.kaggle.com/datasets/harisudhan411/phishing-and-legitimate-urls
 class ImportSet3:
     def __init__(self):
         self.df = None

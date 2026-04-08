@@ -2,6 +2,7 @@ from pathlib import Path
 import pandas as pd
 import csv
 
+#https://data.mendeley.com/datasets/kvpkc4j658/1
 class ImportSet5:
     def __init__(self):
         self.df = None
@@ -73,6 +74,7 @@ class ImportSet5:
 if __name__ == '__main__':
     x = ImportSet5()
     x.import_data()
+    print(x.df.head())
     print(x.df['label'].value_counts())
     print("Ilość adresów url: ",x.df['url'].count())
     print("Ilość etykiet dla url: ",x.df['label'].count())

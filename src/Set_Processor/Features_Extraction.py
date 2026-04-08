@@ -10,7 +10,7 @@ class FeaturesExtraction:
         
         # Prekompilowane reguły dla wydajności (O(1) lookups)
         self.ipv4_pattern = re.compile(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$')
-        self.shorteners = {'bit.ly', 'tinyurl.com', 'v.ht', 'is.gd', 't.co', 'goo.gl', 'ow.ly', 'cutt.ly', 'rb.gy'}
+        self.shorteners = {'bit.ly', 'tinyurl.com', 'v.ht', 'is.gd', 't.co', 'goo.gl', 'ow.ly', 'cutt.ly', 'rb.gy', 'qrco.de'}
         self.risky_tlds = {'.xyz', '.top', '.pw', '.ru', '.cc', '.tk', '.ml', '.ga', '.cf', '.gq', '.info', '.site', '.click'}
         self.keywords = {'login', 'verify', 'update', 'account', 'secure', 'bank', 'password', 'credential', 'support', 'service', 'authenticate', 'billing', 'wallet', 'confirm', 'admin', 'free', 'bonus', 'payment', 'ghost', 'konto', 'oferta'}
 

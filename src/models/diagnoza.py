@@ -13,13 +13,15 @@ from urllib.parse import urlparse
 from Set_Processor import ImportData
 from models_utils import CharTokenizer, Trainer
 
-from models.CNN.model import CNN as CNNmodel
-from models.CNN.config import cfg
+from models.CNN_LSTM.model import CnnLstm2 as modelxd
+from models.CNN_LSTM.config import cfg
 
 import torch
 import numpy as np
 from urllib.parse import urlparse
 from collections import Counter
+
+import pandas as pd
 
 def diagnose(trainer, new_urls, new_labels, threshold=0.5):
     """
@@ -152,7 +154,7 @@ def diagnose(trainer, new_urls, new_labels, threshold=0.5):
     new_urls_list = new_urls.tolist() if hasattr(new_urls, 'tolist') else list(new_urls)
     
     # Wyciągamy URL-e, Predykcje i Etykiety tylko dla błędów
-    error_urls = np.array(new_urls_list)[errors]
+    error_urls = [url for url, is_err in zip(new_urls_list, errors) if is_err]
     error_preds = all_preds[errors]
     error_labels = all_labels[errors]
     
@@ -176,23 +178,114 @@ def diagnose(trainer, new_urls, new_labels, threshold=0.5):
                 n_errors=errors.sum(), n_high_conf_errors=high_conf_errors.sum())
     
 
+import pandas as pd
+import numpy as np
+import torch
+
+def export_hard_negatives_to_csv(trainer, urls, true_labels, output_filename="hard_negatives.csv"):
+    """
+    Uruchamia model na podanym zbiorze, znajduje błędy i zapisuje 
+    błędne adresy URL wraz z ich poprawnymi etykietami do pliku CSV.
+    Wersja zoptymalizowana pod kątem zużycia pamięci RAM (Pandas-first).
+    """
+    trainer.model.eval()
+    all_preds = []
+    
+    # 1. Przygotowanie danych
+    x_tensor, y_tensor = trainer.get_tokenized_tensors(urls, true_labels)
+    
+    with torch.no_grad():
+        if trainer.use_features:
+            X_features = trainer.get_data_features(urls)
+            X_features = torch.tensor(
+                trainer.scaler.transform(X_features.numpy()), 
+                dtype=torch.float32
+            )
+            dataloader = trainer.get_data_loaders(x_tensor, y_tensor, X_features, shuffled=False)
+            
+            for batch_X, batch_features, batch_y in dataloader:
+                batch_X = batch_X.to(trainer.cfg.DEVICE)
+                batch_features = batch_features.to(trainer.cfg.DEVICE)
+                
+                output_raw = trainer.model(batch_X, batch_features)
+                probs = torch.sigmoid(output_raw).squeeze(-1).cpu().numpy()
+                
+                if probs.ndim == 0: probs = np.array([probs])
+                all_preds.extend((probs >= 0.5).astype(int))
+                
+        else:
+            dataloader = trainer.get_data_loaders(x_tensor, y_tensor, shuffled=False)
+            for batch_X, batch_y in dataloader:
+                batch_X = batch_X.to(trainer.cfg.DEVICE)
+                
+                output_raw = trainer.model(batch_X)
+                probs = torch.sigmoid(output_raw).squeeze(-1).cpu().numpy()
+                
+                if probs.ndim == 0: probs = np.array([probs])
+                all_preds.extend((probs >= 0.5).astype(int))
+
+    # 2. Spłaszczenie predykcji i etykiet
+    all_preds = np.array(all_preds).flatten()
+    
+    if hasattr(true_labels, 'values'):
+        all_labels = true_labels.values.flatten()
+    else:
+        all_labels = np.array(true_labels).flatten()
+
+    # ZABEZPIECZENIE PAMIĘCI (Zamiast NumPy, używamy bezpośrednio Pandas DataFrame)
+    # Pandas przechowuje stringi jako referencje do obiektów, ignorując ich maksymalną długość.
+    urls_list = urls.tolist() if hasattr(urls, 'tolist') else list(urls)
+
+    # 3. Tworzymy tabelę zbiorczą
+    df_results = pd.DataFrame({
+        'url': urls_list,
+        'true_label': all_labels,
+        'prediction': all_preds
+    })
+
+    # 4. Odfiltrowujemy tylko te wiersze, gdzie model się pomylił (Hard Negatives)
+    df_errors = df_results[df_results['true_label'] != df_results['prediction']].copy()
+
+    # 5. Formatujemy kolumny pod standardowy trening i zapisujemy do pliku
+    df_errors = df_errors[['url', 'true_label']]
+    df_errors.rename(columns={'true_label': 'label'}, inplace=True)
+    
+    df_errors.to_csv(output_filename, index=False)
+    print(f"Zakończono! Zapisano {len(df_errors)} trudnych przypadków (Hard Negatives) do pliku '{output_filename}'.")
 
 
 data = ImportData()
-models = CNNmodel(cfg)
+models = modelxd(cfg)
 models.load_state_dict(torch.load(cfg.PATH))
 trainer = Trainer(models, cfg)
+trainer.scaler = joblib.load(cfg.SCALER_PATH)
 
-'''
+
+data.Import_set_4()
+X, y = data.Get_NLP()
+print("-"*50)
+print("set - 4")
+diagnose(trainer, X, y)
+#export_hard_negatives_to_csv(trainer, X, y)
+
+
+data.Import_set_1()
+X, y = data.Get_NLP()
+print("-"*50)
+print("set - 1")
+diagnose(trainer, X, y)
+
+
 data.Import_set_2()
 X, y = data.Get_NLP()
 print("-"*50)
 print("set - 2")
 diagnose(trainer, X, y)
-'''
-data.Import_set_5()
+
+
+data.Import_set_3()
 X, y = data.Get_NLP()
 print("-"*50)
-print("set - 5")
+print("set - 3")
 diagnose(trainer, X, y)
-#'''
+

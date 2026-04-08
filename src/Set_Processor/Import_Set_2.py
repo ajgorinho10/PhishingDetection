@@ -2,6 +2,7 @@ from pathlib import Path
 import pandas as pd
 import csv
 
+# https://data.mendeley.com/datasets/vfszbj9b36/1
 class ImportSet2:
     def __init__(self):
         self.df = None

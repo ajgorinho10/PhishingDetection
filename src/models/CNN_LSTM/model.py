@@ -133,12 +133,15 @@ class CnnLstm2(nn.Module, BaseModel):
 
 if __name__ == "__main__":
     data = ImportData()
-    data.Import_set_5()
+    data.read_set_1()
     X, y = data.Get_NLP()
     
     model = CnnLstm2(cfg)
-    model.run_training(X, y)
+    #model.evaluate(X, y)
     
+
+    model.run_training(X, y)
+    '''
     print("-" * 50)
     print("Evaluacja set 2\n")
     data.Import_set_2()
@@ -150,4 +153,5 @@ if __name__ == "__main__":
     data.Import_set_5()
     X, y = data.Get_NLP()
     model.evaluate(X, y)
+    '''
     
