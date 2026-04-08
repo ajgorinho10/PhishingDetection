@@ -2,56 +2,74 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from Set_Processor import ImportData
-
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
-import numpy as np
-from typing import Optional, Tuple
+from Set_Processor import ImportData
+from models_utils import BaseModel
+from .config import cfg
+from attention_layers import AdditiveAttention, SqueezeExcitation, SpatialAttention
 
-from attention_layers import AdditiveAttention
-from models_utils import Trainer, BaseModel
-from CNN_LSTM import cfg
+class CNNBlock(nn.Module):
+    def __init__(self, in_channels: int, out_channels: int, kernel_size: int):
+        super().__init__()
+        
+        self.conv = nn.Sequential(
+            nn.Conv1d(
+                in_channels=in_channels,
+                out_channels=out_channels,
+                kernel_size=kernel_size,
+                padding=kernel_size // 2
+            ),
+            nn.BatchNorm1d(out_channels),
+            nn.ReLU(inplace=True)
+        )
+        
+        self.se = SqueezeExcitation(out_channels, 4)
+        self.sa = SpatialAttention()
+        
+    def forward(self, x, mask=None):
+        x = self.conv(x)
+        # Przekazanie maski do zaktualizowanych warstw uwagi
+        x = self.se(x, mask)
+        x = self.sa(x, mask)
+        return x
 
-
-class CNN_LSTM(nn.Module, BaseModel):
+class CnnLstm2(nn.Module, BaseModel):
     def __init__(self, cfg):
         super().__init__()
         
         self.cfg = cfg
         
         self.embedding = nn.Embedding(
-            num_embeddings=self.cfg.VOCAB_SIZE,
-            embedding_dim=self.cfg.EMBED_DIM,
-            padding_idx=self.cfg.PAD_IDX
+            num_embeddings = self.cfg.VOCAB_SIZE,
+            embedding_dim  = self.cfg.EMBED_DIM,
+            padding_idx    = self.cfg.PAD_IDX
         )
         
-        # Inicjalizacja paddingu zerami (dobra praktyka)
         with torch.no_grad():
             self.embedding.weight[self.cfg.PAD_IDX].fill_(0)
-        
-        # Konwolucja zachowująca oryginalną długość sekwencji (brak MaxPool)
+            
+        # 2. Użycie nowej klasy CNNBlock zamiast nn.Sequential
         self.conv_blocks = nn.ModuleList([
-            nn.Sequential(
-               nn.Conv1d(
-                   in_channels  = self.cfg.EMBED_DIM,
-                   out_channels = self.cfg.CNN_FILTERS,
-                   kernel_size  = k,
-                   padding      = k // 2
-               ),
-               nn.BatchNorm1d(self.cfg.CNN_FILTERS),
-               nn.ReLU()
-            ) 
+            CNNBlock(
+                in_channels=self.cfg.EMBED_DIM,
+                out_channels=self.cfg.CNN_FILTERS,
+                kernel_size=k
+            )
             for k in self.cfg.CNN_KERNELS
         ])
         
         self.conv_out_dim = self.cfg.CNN_FILTERS * len(self.cfg.CNN_KERNELS)
         
-        # Bezpośrednie przekazanie wyjścia CNN do LSTM
+        self.cnn_proj = nn.Sequential(
+            nn.Linear(in_features=self.conv_out_dim, out_features=self.conv_out_dim//2),
+            nn.ReLU(),
+            nn.Dropout(self.cfg.DROPOUT * 0.5),
+        )
+        
         self.lstm = nn.LSTM(
-            input_size      = self.conv_out_dim,
+            input_size      = self.conv_out_dim//2,
             hidden_size     = self.cfg.LSTM_UNITS,
             num_layers      = 1,
             batch_first     = True,
@@ -59,60 +77,66 @@ class CNN_LSTM(nn.Module, BaseModel):
             dropout         = 0.0 
         )
         
-        self.lstm_out_dim = self.cfg.LSTM_UNITS * 2
-        self.attention = AdditiveAttention(self.lstm_out_dim, self.cfg.ATTN_DIM)
+        self.lstm_out_dim = self.cfg.LSTM_UNITS * 2   
+        self.attention_additive = AdditiveAttention(self.lstm_out_dim, self.cfg.ATTN_DIM)
         
-        # Zoptymalizowany klasyfikator bez nadmiernego dropoutu
+        
+        self.classifier_in_dim = self.lstm_out_dim
+        if self.cfg.USE_FEATURES:
+            self.classifier_in_dim += self.cfg.FEATURES_LEN
+        
         self.classifier = nn.Sequential(
             nn.Linear(
-                in_features  = self.lstm_out_dim,
-                out_features = self.lstm_out_dim // 2
+                in_features  = self.classifier_in_dim,
+                out_features = self.classifier_in_dim // 2
             ),
             nn.ReLU(),
             nn.Dropout(self.cfg.DROPOUT),
             nn.Linear(
-                in_features  = self.lstm_out_dim // 2,
+                in_features  = self.classifier_in_dim // 2,
                 out_features = 1
             ),
         )
     
-    def forward(self, x, return_attention: bool = False):
-        # 1. Generowanie maski dla tokenów paddingu
+    def forward(self, x, features = None,return_attention: bool = False):
         mask = (x == self.cfg.PAD_IDX)
         
-        # 2. Embedding
         x_emb = self.embedding(x)
         x_emb = x_emb.permute(0, 2, 1)
         
-        # 3. Ekstrakcja cech (Równoległe filtry)
-        conv_outs = [block(x_emb) for block in self.conv_blocks]
+        # 3. Pętla przekazująca tensor x_emb oraz maskę do każdego bloku
+        conv_outs = []
+        for block in self.conv_blocks:
+            out = block(x_emb, mask)
+            conv_outs.append(out)
     
-        # Ponieważ padding zachowuje długość sekwencji, możemy bezpiecznie łączyć
         x_cat = torch.cat(conv_outs, dim=1)
         x_cat = x_cat.permute(0, 2, 1)
         
-        # 4. Przetwarzanie sekwencyjne
-        lstm_out, _ = self.lstm(x_cat)
+        cnn_proj_out = self.cnn_proj(x_cat)
         
-        # 5. Wyliczanie wagi z maską
-        context, attn_weights = self.attention(lstm_out, mask=mask)
+        lstm_out, (h_n, c_n) = self.lstm(cnn_proj_out)
         
-        # 6. Klasyfikacja
-        logits = self.classifier(context)
+        context, attn_weights = self.attention_additive(lstm_out, mask)
         
+        if features is not None:
+            combined = torch.cat([context, features], dim=-1)
+        else:
+            combined = context
+        logit = self.classifier(combined)
+ 
         if return_attention:
-            return logits, attn_weights
+            return logit, attn_weights
+        return logit
         
-        return logits
 
 
 if __name__ == "__main__":
-    
     data = ImportData()
-    data.Import_set_3()
+    data.Import_set_5()
     X, y = data.Get_NLP()
     
-    model = CNN_LSTM(cfg)
+    model = CnnLstm2(cfg)
     model.run_training(X, y)
     
     print("-" * 50)
@@ -126,3 +150,4 @@ if __name__ == "__main__":
     data.Import_set_5()
     X, y = data.Get_NLP()
     model.evaluate(X, y)
+    

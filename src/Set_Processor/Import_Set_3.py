@@ -41,10 +41,11 @@ class ImportSet3:
         df['label'] = df['label'].apply(lambda x : 1 if str(x).strip() == '0' else 0)
 
 
-        df.drop_duplicates(subset=['url'], inplace=True)
         df['url'] = df['url'].astype(str)
         df['url'] = df['url'].str.replace(r'^https?:\/\/', '', regex=True)
         df['url'] = df['url'].str.replace(r'^www\.', '', regex=True)
+        df.drop_duplicates(subset=['url'], inplace=True)
+        df['label'] = df['label'].astype('int8')
 
         self.df = df
 

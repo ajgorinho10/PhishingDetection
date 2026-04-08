@@ -58,6 +58,9 @@ class ImportSet2:
         df['url'] = df['url'].str.replace(r'^www\.', '', regex=True)
 
         df = df.sample(frac=1, random_state=42).reset_index(drop=True)
+        
+        df['label'] = df['label'].astype('int8')
+        df = df.drop_duplicates(keep='first')
 
         self.df = df
 

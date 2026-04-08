@@ -60,6 +60,7 @@ class ImportSet5:
  
         df['label'] = label_value
         df['url'] = df['url'].astype(str)
+        df['label'] = df['label'].astype('int8')
         
         # UWAGA LOGICZNA:
         # Usuwanie schematów URL musi być spójne dla WSZYSTKICH zbiorów (1, 2, 3 i 5).

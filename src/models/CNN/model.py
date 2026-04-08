@@ -10,15 +10,18 @@ import torch.nn.functional as F
 import numpy as np
 
 from Set_Processor import ImportData
-from config import cfg
+from .config import cfg
 from models_utils import Trainer, BaseModel
 from attention_layers import SqueezeExcitation, SpatialAttention
+
+from Set_Processor import FeaturesExtraction
 
     
         
 class CNNBlocks(nn.Module):
     def __init__(self, in_dim:int, out_dim:int , kernel_size: int ):
         super().__init__()
+        
         
         self.conv = nn.Sequential(
                 nn.Conv1d(
@@ -48,6 +51,7 @@ class CNN(nn.Module, BaseModel):
         super(CNN, self).__init__()
         
         self.cfg = cfg
+        self.features = FeaturesExtraction()
 
         self.embedding = nn.Embedding(
             num_embeddings = self.cfg.VOCAB_SIZE,
@@ -61,34 +65,56 @@ class CNN(nn.Module, BaseModel):
                 CNNBlocks(in_dim = self.cfg.CNN_FILTERS, out_dim = self.cfg.CNN_FILTERS//2, kernel_size = self.cfg.CNN_KERNELS[2])
             )
         
-        
-        self.gap = nn.AdaptiveAvgPool1d(1)
-        self.gmp = nn.AdaptiveMaxPool1d(1)
-        
+              
         self.classifier_dim = self.cfg.CNN_FILTERS
+        if self.cfg.USE_FEATURES:
+            self.classifier_dim += self.cfg.FEATURES_LEN
         
         self.classifier = nn.Sequential(
             nn.Linear(in_features = self.classifier_dim, out_features = self.classifier_dim//2),
             nn.ReLU(),
             nn.Dropout(self.cfg.DROPOUT),
             
-            nn.Linear(in_features = self.classifier_dim//2, out_features = 1)
+            nn.Linear(in_features = self.classifier_dim//2, out_features = self.classifier_dim//4),
+            nn.ReLU(),
+            nn.Dropout(self.cfg.DROPOUT * 0.5),
+            
+            nn.Linear(in_features = self.classifier_dim//4, out_features = 1),
         )
 
-    def forward(self,x):
+    def forward(self, x, features=None):
+        mask = (x == self.cfg.PAD_IDX)  # (Batch, SeqLen)
+        
         x = self.embedding(x)
-        x = x.permute(0, 2, 1)
+        x = x.permute(0, 2, 1)  # (Batch, Channels, SeqLen)
         
-    
-        blocks = self.conv_blocks(x)
+        # Przejście przez bloki konwolucyjne z maską
+        blocks = x
+        for block in self.conv_blocks:
+            blocks = block(blocks, mask)
+            
+        # 3. Zastąpienie spłaszczania True GAP & GMP
+        mask_expanded = mask.unsqueeze(1)  # (Batch, 1, SeqLen)
+        valid_lengths = (~mask).sum(dim=1, keepdim=True).clamp(min=1)  # (Batch, 1)
         
-        gap = self.gap(blocks).squeeze(-1)
-        gmp = self.gmp(blocks).squeeze(-1)
-        x = torch.cat([gap,gmp],dim = 1)
+        # Agregacja średniej
+        blocks_masked_avg = blocks.masked_fill(mask_expanded, 0.0)
+        gap = blocks_masked_avg.sum(dim=2) / valid_lengths
+        
 
-        x = self.classifier(x)
+        blocks_masked_max = blocks.masked_fill(mask_expanded, -1e9)
+        gmp = blocks_masked_max.max(dim=2)[0]
         
-        return x
+
+        x_out = torch.cat([gap, gmp], dim=1)
+
+
+        if self.cfg.USE_FEATURES and features is not None:
+            x_out = torch.cat([x_out, features], dim=-1)
+        
+        logits = self.classifier(x_out)
+        
+        return logits
 
         
 
@@ -96,7 +122,8 @@ class CNN(nn.Module, BaseModel):
 if __name__ == "__main__":
 
     data = ImportData()
-    data.Import_set_3()
+    data.Import_set_5()
+
     X, y = data.Get_NLP()
 
     cnn = CNN(cfg)
@@ -110,7 +137,7 @@ if __name__ == "__main__":
     
     print(f"{"-" * 50}")
     print("Evaluacja set 5\n")
-    data.Import_set_5()
+    data.Import_set_3()
     X, y = data.Get_NLP()
     cnn.evaluate(X, y)
 

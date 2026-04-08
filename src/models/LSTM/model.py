@@ -55,24 +55,28 @@ class LSTM(nn.Module, BaseModel):
         self.lstm_out_dim = self.cfg.EMBED_DIM * 2
         
         self.attention = AdditiveAttention(self.lstm_out_dim, self.cfg.ATTN_DIM)
+        
+        self.classifier_in_dim = self.lstm_out_dim + (self.cfg.FEATURES_LEN if self.cfg.USE_FEATURES else 0)
 
         self.classifier = nn.Sequential(
             nn.Linear(
-                in_features  = self.lstm_out_dim,
-                out_features = self.lstm_out_dim//2
+                in_features  = self.classifier_in_dim,
+                out_features = self.classifier_in_dim//2
             ),
             
             nn.ReLU(),
             nn.Dropout(self.cfg.DROPOUT),
             
             nn.Linear(
-                in_features  = self.lstm_out_dim//2,
+                in_features  = self.classifier_in_dim//2,
                 out_features = 1
             ),
         )
         
         
-    def forward(self, x, return_attention: bool = False):
+    def forward(self, x, features = None, return_attention: bool = False):
+        mask = (x == self.cfg.PAD_IDX)
+        
         x = self.embanding(x)
      
         x, _ = self.lstm1(x)
@@ -81,7 +85,10 @@ class LSTM(nn.Module, BaseModel):
         
         lstm_out, _ = self.lstm2(x)
         
-        context, attn_weights = self.attention(lstm_out)
+        context, attn_weights = self.attention(lstm_out, mask)
+        
+        if features != None:
+            context = torch.cat([context, features], dim = -1)
         
         x = self.classifier(context)
         
