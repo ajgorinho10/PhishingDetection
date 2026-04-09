@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 
 from Set_Processor import ImportData
-from models_utils import BaseModel
+from models_utils import ModelTokens
 from .config import cfg
 from attention_layers import AdditiveAttention, SqueezeExcitation, SpatialAttention
 
@@ -35,7 +35,7 @@ class CNNBlock(nn.Module):
         x = self.sa(x, mask)
         return x
 
-class CnnLstm2(nn.Module, BaseModel):
+class CnnLstm2(nn.Module, ModelTokens):
     def __init__(self, cfg):
         super().__init__()
         

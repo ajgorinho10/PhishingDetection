@@ -9,14 +9,14 @@ import torch.nn as nn
 
 import numpy as np
 
-from models_utils import BaseModel
-from config import cfg
+from models_utils import ModelTokens
+from .config import cfg
 from attention_layers import AdditiveAttention
 
 
 
 
-class LSTM(nn.Module, BaseModel):
+class LSTM(nn.Module, ModelTokens):
     def __init__(self, cfg):
         super().__init__()
         
@@ -102,12 +102,13 @@ class LSTM(nn.Module, BaseModel):
 if __name__ == "__main__":
     
     data = ImportData()
-    data.Import_set_3()
+    data.read_set_1()
     X_data, y_data = data.Get_NLP()
     
     lstm = LSTM(cfg)
     lstm.run_training(X=X_data, y=y_data)
     
+    '''
     print(f"{"-" * 50}")
     print("Evaluacja set 2\n")
     data.Import_set_2()
@@ -119,3 +120,4 @@ if __name__ == "__main__":
     data.Import_set_5()
     X, y = data.Get_NLP()
     lstm.evaluate(X, y)
+    '''

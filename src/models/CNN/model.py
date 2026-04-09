@@ -11,7 +11,7 @@ import numpy as np
 
 from Set_Processor import ImportData
 from .config import cfg
-from models_utils import Trainer, BaseModel
+from models_utils import ModelTokens
 from attention_layers import SqueezeExcitation, SpatialAttention
 
 from Set_Processor import FeaturesExtraction
@@ -46,7 +46,7 @@ class CNNBlocks(nn.Module):
         return F.relu(x)
 
 
-class CNN(nn.Module, BaseModel):
+class CNN(nn.Module, ModelTokens):
     def __init__(self, cfg):
         super(CNN, self).__init__()
         
@@ -122,13 +122,13 @@ class CNN(nn.Module, BaseModel):
 if __name__ == "__main__":
 
     data = ImportData()
-    data.Import_set_5()
-
+    data.read_set_1()
     X, y = data.Get_NLP()
 
     cnn = CNN(cfg)
     cnn.run_training(X,y)
     
+    '''
     print(f"{"-" * 50}")
     print("Evaluacja set 2\n")
     data.Import_set_2()
@@ -140,5 +140,6 @@ if __name__ == "__main__":
     data.Import_set_3()
     X, y = data.Get_NLP()
     cnn.evaluate(X, y)
+    '''
 
 

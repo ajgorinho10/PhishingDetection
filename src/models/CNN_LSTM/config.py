@@ -16,7 +16,7 @@ class Config:
     ATTN_DIM      = 128
     DENSE_DIM     = 256
     DROPOUT       = 0.3
-    USE_FEATURES  = True
+    USE_FEATURES  = False
     FEATURES_LEN  = 8
 
     # Trening

@@ -13,7 +13,7 @@ class Config:
     CNN_FILTERS   = 256
     CNN_KERNELS   = [3, 5, 7]
     DROPOUT       = 0.4
-    USE_FEATURES  = True
+    USE_FEATURES  = False
     FEATURES_LEN  = 8
 
 
