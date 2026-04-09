@@ -1,11 +1,7 @@
-import numpy as np
-import joblib
 import matplotlib.pyplot as plt
 
 import torch
-from torch.utils.data import TensorDataset, DataLoader
 import torch.nn as nn
-import torch.nn.functional as F
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -17,7 +13,6 @@ from sklearn.metrics import (
     recall_score)
 
 
-from models_utils import CharTokenizer
 from models_utils import EarlyStopping
 
 from Set_Processor import FeaturesExtraction
@@ -32,10 +27,15 @@ class Trainer:
         self.use_features = cfg.USE_FEATURES
         self.scaler = StandardScaler()
         
-        self.optimizer  = torch.optim.AdamW(model.parameters(), lr=cfg.LR, weight_decay=1e-4)
-        self.scheduler  = torch.optim.lr_scheduler.CosineAnnealingLR(
-            self.optimizer, T_max=cfg.EPOCHS, eta_min=1e-5
-        )
+        if hasattr(self.model, 'parameters'):
+            self.optimizer  = torch.optim.AdamW(self.model.parameters(), lr=cfg.LR, weight_decay=1e-4)
+            self.scheduler  = torch.optim.lr_scheduler.CosineAnnealingLR(
+                self.optimizer, T_max=cfg.EPOCHS, eta_min=1e-5
+            )
+        else:
+            self.optimizer = None
+            self.scheduler = None
+            
         self.loss_f = nn.BCEWithLogitsLoss()
         self.early_stopping = EarlyStopping(patience=cfg.PATIENCE, min_delta=0.001, path = cfg.PATH)
         
@@ -230,7 +230,6 @@ class Trainer:
         
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
         
-        # Wykres 1: Funkcja straty (Loss)
         ax1.plot(epoki, self.history['train_loss'], label='Train Loss', marker='o')
         ax1.plot(epoki, self.history['val_loss'], label='Val Loss', marker='o')
         ax1.set_title('Zmiana funkcji straty')
@@ -239,7 +238,6 @@ class Trainer:
         ax1.grid(True, linestyle='--', alpha=0.7)
         ax1.legend()
         
-        # Wykres 2: Metryki klasyfikacji
         ax2.plot(epoki, self.history['f1'], label='Val F1', marker='s')
         ax2.plot(epoki, self.history['acc'], label='Val Acc', marker='s')
         ax2.plot(epoki, self.history['recal'], label='Val Recall', marker='s')

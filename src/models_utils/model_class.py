@@ -1,6 +1,3 @@
-from trainer import Trainer_Tokens
-from trainer import Trainer_TfIDF  # Pamiętaj o poprawnym imporcie!
-
 import torch
 import joblib
 
@@ -9,6 +6,7 @@ class ModelTokens:
         self.cfg = cfg
 
     def run_training(self, X, y):
+        from trainer import Trainer_Tokens
         data_to_trainer = [X, y]
         trainer = Trainer_Tokens(
             self, 
@@ -18,6 +16,7 @@ class ModelTokens:
         trainer.train()
         
     def evaluate(self, X, y):
+        from trainer import Trainer_Tokens
         trainer = Trainer_Tokens(self, cfg=self.cfg, data_sets=None)
         
         if self.cfg.USE_FEATURES:
@@ -41,6 +40,7 @@ class ModelTfIDF:
         self.cfg = cfg
 
     def run_training(self, X, y):
+        from trainer import Trainer_TfIDF
         data_to_trainer = [X, y]
         trainer = Trainer_TfIDF(
             self, 
@@ -50,6 +50,7 @@ class ModelTfIDF:
         trainer.train()
         
     def evaluate(self, X, y):
+        from trainer import Trainer_TfIDF
         trainer = Trainer_TfIDF(self, cfg=self.cfg, dataset=None)
         
         trainer.ftidfVectorizer = joblib.load(self.cfg.FTIDF_PATH)

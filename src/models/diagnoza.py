@@ -293,9 +293,26 @@ def test_model_MLP():
         trainer.scaler = joblib.load(cfg.SCALER_PATH)
     
     diagnoze_at_all_sets(trainer)
-
+    
+def test_model_XGBoots():
+    from models.XGBoost.model import XGBoostWrapper
+    from models.XGBoost.config import cfg
+    from trainer import Trainer_XGB
+    
+    xgb_wrapper = XGBoostWrapper(cfg)
+    xgb_wrapper.load(cfg.PATH)
+    
+    # Przekazujemy wrapper do uniwersalnego trainera (dziedziczy po TFIDF)
+    trainer = Trainer_XGB(xgb_wrapper, cfg, dataset=None)
+    trainer.ftidfVectorizer = joblib.load(cfg.FTIDF_PATH)
+    
+    if cfg.USE_FEATURES:
+        trainer.scaler = joblib.load(cfg.SCALER_PATH)
+    
+    diagnoze_at_all_sets(trainer)
 
 #test_model_CNN_LSTM()
-test_model_CNN()
+#test_model_CNN()
 #test_model_MLP()
 #test_model_LSTM()
+test_model_XGBoots()

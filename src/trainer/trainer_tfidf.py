@@ -15,7 +15,6 @@ class SparseDataset(Dataset):
         self.X_sparse = X_sparse
         self.X_features = X_features
         
-        # Bepieczna konwersja (omija kolizję nazwy .values)
         if isinstance(y_data, torch.Tensor):
             self.y_data = y_data.clone().detach().to(torch.float32).view(-1, 1)
         else:

@@ -3,10 +3,10 @@
 - CNN
 - LSTM
 - MLP
+- XGBoost
 
 
 # to do:
-- sprawdzić drzewa
 - dodać transformer
 
 
