@@ -1,13 +1,10 @@
-# OK:
+# Modele:
 - CNN_LSTM
 - CNN
 - LSTM
 - MLP
 - XGBoost
-
-
-# to do:
-- dodać transformer
+- Transformer
 
 
 # Ważne
@@ -17,12 +14,8 @@ kazdy set przed samym treningiem jest dzielony:
 - 15% test
 
 
-
 set 1 - set treningowy
 set 2 - set testowy
 set 3 - set testowy
-set 4 - set testowy, najnowsze dane
+set 4 - set treningowy, najnowsze dane
 
-
-do setu NR 1 (wersja processed) dodanje przypadki które model źle sklasyfikował w secie:
-- NR 4

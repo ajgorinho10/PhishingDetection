@@ -47,4 +47,4 @@ if __name__ == '__main__':
     x = ImportSet1()
     x.import_data()
     #x.read_data()
-    print(x.df.head(5))
+    print(x.df['label'].value_counts())

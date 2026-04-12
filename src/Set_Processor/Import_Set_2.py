@@ -70,4 +70,4 @@ class ImportSet2:
 if __name__ == "__main__":
     obj = ImportSet2()
     obj.import_data()
-    print(obj.df)
+    print(obj.df['label'].value_counts())

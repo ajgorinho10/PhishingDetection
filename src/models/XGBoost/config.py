@@ -3,7 +3,7 @@ import torch
 class Config:
 
     TFIDF_FEATURES = 3000
-    USE_FEATURES   = True
+    USE_FEATURES   = False
     FEATURES_LEN   = 8
 
 

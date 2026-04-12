@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
+import math
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -17,6 +19,26 @@ from models_utils import EarlyStopping
 
 from Set_Processor import FeaturesExtraction
 
+def get_scheduler(optimizer, warmup_steps: int, total_steps: int):
+    def lr_lambda(step: int) -> float:
+        if step < warmup_steps:
+            return float(step) / max(1, warmup_steps)
+        progress = (step - warmup_steps) / max(1, total_steps - warmup_steps)
+        return max(0.0, 0.5 * (1.0 + math.cos(math.pi * progress)))
+    
+    return torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda)
+
+class FocalLoss(nn.Module):
+    def __init__(self, alpha=0.25, gamma=2.0):
+        super().__init__()
+        self.alpha = alpha
+        self.gamma = gamma
+
+    def forward(self, inputs, targets):
+        bce_loss = F.binary_cross_entropy_with_logits(inputs, targets, reduction='none')
+        pt = torch.exp(-bce_loss) 
+        focal_loss = self.alpha * (1 - pt) ** self.gamma * bce_loss
+        return focal_loss.mean()
 
 class Trainer:
     
@@ -36,7 +58,7 @@ class Trainer:
             self.optimizer = None
             self.scheduler = None
             
-        self.loss_f = nn.BCEWithLogitsLoss()
+        self.loss_f = FocalLoss(alpha=0.25, gamma=2.0)
         self.early_stopping = EarlyStopping(patience=cfg.PATIENCE, min_delta=0.001, path = cfg.PATH)
         
         self.history = {'train_loss': [], 'val_loss': [], 'f1': [], 'acc': [], 'recal': []}
@@ -108,10 +130,14 @@ class Trainer:
             output = self.model(batch_X)
             loss = self.loss_f(output, batch_y)
             loss.backward()
+                
+            nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
             self.optimizer.step()
                 
+            if hasattr(self.cfg, 'WARMUP_STEPS') is True:
+                self.scheduler.step()
+                
             running_train_loss += loss.item()
-            nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
                 
         return running_train_loss / len(data_loader)
 
@@ -126,10 +152,15 @@ class Trainer:
             output = self.model(batch_X, batch_features)
             loss = self.loss_f(output, batch_y)
             loss.backward()
-            self.optimizer.step()
                 
-            running_train_loss += loss.item()
+            
             nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
+            self.optimizer.step()
+            
+            if hasattr(self.cfg, 'WARMUP_STEPS') is True:
+                self.scheduler.step()
+            
+            running_train_loss += loss.item()
                 
         return running_train_loss / len(data_loader)
             
@@ -187,6 +218,10 @@ class Trainer:
       
     def train(self): 
         train_loader, val_loader, test_loader = self.splits_data_to_Train_Val_Test()
+        
+        if hasattr(self.cfg, 'WARMUP_STEPS'):
+            total_steps = len(train_loader) * self.cfg.EPOCHS
+            self.scheduler = get_scheduler(self.optimizer,self.cfg.WARMUP_STEPS,total_steps)
 
         for epoch in range(self.cfg.EPOCHS):
             if self.use_features:
@@ -214,7 +249,8 @@ class Trainer:
                    f" | Val Recal: {metrics['recal']:.4f}"
             )
             
-            self.scheduler.step()
+            if hasattr(self.cfg, 'WARMUP_STEPS') is False:
+                self.scheduler.step()
             
             self.early_stopping(avg_val_loss, self.model)
             if self.early_stopping.early_stop:
@@ -248,4 +284,5 @@ class Trainer:
         ax2.legend()
         
         plt.tight_layout()
-        plt.show() 
+        plt.show()
+        

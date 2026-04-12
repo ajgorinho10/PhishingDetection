@@ -102,7 +102,7 @@ class LSTM(nn.Module, ModelTokens):
 if __name__ == "__main__":
     
     data = ImportData()
-    data.read_set_1()
+    data.Import_set_4()
     X_data, y_data = data.Get_NLP()
     
     lstm = LSTM(cfg)

@@ -11,7 +11,7 @@ class Config:
     TFIDF_FEATURES= 3000         # NOWE: Maksymalna liczba cech z TF-IDF
     DENSE_DIM     = 512          # Rozmiar warstwy ukrytej (po redukcji)
     DROPOUT       = 0.4
-    USE_FEATURES  = True
+    USE_FEATURES  = False
     FEATURES_LEN  = 8
 
     # Trening

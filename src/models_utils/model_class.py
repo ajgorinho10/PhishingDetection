@@ -33,6 +33,7 @@ class ModelTokens:
             data_loader = trainer.get_data_loaders(*trainer.get_tokenized_tensors(X, y), shuffled=False)
             
         trainer.evaluate(data_loader)
+               
         
         
 class ModelTfIDF:

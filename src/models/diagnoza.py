@@ -310,9 +310,34 @@ def test_model_XGBoots():
         trainer.scaler = joblib.load(cfg.SCALER_PATH)
     
     diagnoze_at_all_sets(trainer)
+    
+def test_model_Transformer():
+    from models.transformers.model import Transformer
+    from models.transformers.config import cfg
+    from trainer.trainer_tokenization import Trainer_Tokens 
+    
+    # Inicjalizacja
+    transformer_model = Transformer(cfg)
+    
+    # Podpięcie pod Twój sprawdzony Trainer dla tokenów
+    trainer = Trainer_Tokens(transformer_model, cfg)
+    
+    # Jeśli trenujesz:
+    # data_to_trainer = [X_train, y_train]
+    # trainer.dataset = data_to_trainer
+    # trainer.train()
+    
+    # Jeśli diagnozujesz:
+    transformer_model.load_state_dict(torch.load(cfg.PATH, weights_only=True))
+    if cfg.USE_FEATURES:
+        trainer.scaler = joblib.load(cfg.SCALER_PATH)
+    
+    diagnoze_at_all_sets(trainer)
 
 #test_model_CNN_LSTM()
 #test_model_CNN()
 #test_model_MLP()
 #test_model_LSTM()
 test_model_XGBoots()
+#test_model_Transformer() 
+

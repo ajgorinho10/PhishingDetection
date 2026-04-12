@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from models_utils import CharTokenizer
 from .trainer import Trainer
 
+
 class Trainer_Tokens(Trainer):
     
     def __init__(self, model, cfg, data_sets = None):

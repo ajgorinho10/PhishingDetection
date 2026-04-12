@@ -59,7 +59,7 @@ class XGBoostWrapper:
 
 if __name__ == "__main__":
     dane = ImportData()
-    dane.read_set_1()
+    dane.Import_set_4()
     X, y = dane.Get_NLP()
 
     xgb_model = XGBoostWrapper(cfg)

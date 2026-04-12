@@ -1,328 +1,330 @@
 # CNN (NLP + Cechy)
-## set - 4
-### Metryki
--  Precision : 0.1649   (ile z 'phishing' to naprawdę phishing)
--  Recall    : 0.8737   (ile phishingów zostało wykrytych)
--  F1        : 0.2774
--  FPR       : 0.2474   (ile legit URL-i fałszywie oznaczono jako phishing)
-
-###  Błędy wysokiej pewności (|prob−0.5|>0.4)
--  Liczba: 85683 / 254470 błędów ogółem
-
-### F1 według długości URL
--  [  0– 50 znaków]  n=1,040,321  F1=0.2155
--  [ 50–100 znaków]  n=  8,022  F1=0.9069
--  [100–150 znaków]  n=  1,852  F1=0.9740
--  [150–200 znaków]  n=  4,925  F1=0.9995
--  [200–999 znaków]  n=    770  F1=0.9855
-
-### Rozkład predykcji
--  [0.0–0.1]  n= 332,469  acc=0.991  ████████████
--  [0.1–0.2]  n= 187,179  acc=0.993  ███████
--  [0.2–0.3]  n= 111,453  acc=0.991  ████
--  [0.3–0.4]  n=  73,672  acc=0.989  ██
--  [0.4–0.5]  n=  54,877  acc=0.984  ██
--  [0.5–0.6]  n=  48,330  acc=0.020  █
--  [0.6–0.7]  n=  41,602  acc=0.029  █
--  [0.7–0.8]  n=  39,662  acc=0.040  █
--  [0.8–0.9]  n=  41,532  acc=0.064  █
--  [0.9–1.0]  n= 125,140  acc=0.339  ████
-
-### Top 10 domen w błędach (Domena | Model | Prawda)
-      81×  flowcode.com                        | Model: Legit (0)    | Prawda: Phishing (1)
-      54×  us2.campaign-archive.com            | Model: Legit (0)    | Prawda: Phishing (1)
-      53×  us6.campaign-archive.com            | Model: Legit (0)    | Prawda: Phishing (1)
-      45×  us4.campaign-archive.com            | Model: Legit (0)    | Prawda: Phishing (1)
-      43×  us20.campaign-archive.com           | Model: Legit (0)    | Prawda: Phishing (1)
-      43×  us9.campaign-archive.com            | Model: Legit (0)    | Prawda: Phishing (1)
-      42×  us11.campaign-archive.com           | Model: Legit (0)    | Prawda: Phishing (1)
-      42×  us15.campaign-archive.com           | Model: Legit (0)    | Prawda: Phishing (1)
-      41×  us10.campaign-archive.com           | Model: Legit (0)    | Prawda: Phishing (1)
-      41×  linkin.bio                          | Model: Legit (0)    | Prawda: Phishing (1)
-## set - 1
-### Metryki
--  Precision : 0.9833   (ile z 'phishing' to naprawdę phishing)
--  Recall    : 0.9564   (ile phishingów zostało wykrytych)
--  F1        : 0.9697
--  FPR       : 0.0046   (ile legit URL-i fałszywie oznaczono jako phishing)
-
-###  Błędy wysokiej pewności (|prob−0.5|>0.4)
--  Liczba: 1699 / 5829 błędów ogółem
-
-### F1 według długości URL
--  [  0– 50 znaków]  n=282,101  F1=0.9551
--  [ 50–100 znaków]  n=136,470  F1=0.9893
--  [100–150 znaków]  n= 17,188  F1=0.9935
--  [150–200 znaków]  n=  3,694  F1=0.9969
--  [200–999 znaków]  n=  3,727  F1=0.9978
-
-### Rozkład predykcji
--  [0.0–0.1]  n= 336,897  acc=0.996  ██████████████████████████████
--  [0.1–0.2]  n=   6,086  acc=0.866  
--  [0.2–0.3]  n=   2,580  acc=0.738  
--  [0.3–0.4]  n=   1,564  acc=0.582  
--  [0.4–0.5]  n=   1,267  acc=0.474  
--  [0.5–0.6]  n=   1,365  acc=0.646  
--  [0.6–0.7]  n=   1,559  acc=0.775  
--  [0.7–0.8]  n=   2,041  acc=0.872  
--  [0.8–0.9]  n=   3,367  acc=0.933  
--  [0.9–1.0]  n=  86,478  acc=0.997  ███████
-
-### Top 10 domen w błędach (Domena | Model | Prawda)
-      39×  twitter.com                         | Model: Legit (0)    | Prawda: Phishing (1)
-      32×  facebook.com                        | Model: Phishing (1) | Prawda: Legit (0)
-      27×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
-      16×  angelfire.com                       | Model: Legit (0)    | Prawda: Phishing (1)
-       7×  twitter.com                         | Model: Phishing (1) | Prawda: Legit (0)
-       7×  newmanamechurch.org                 | Model: Legit (0)    | Prawda: Phishing (1)
-       7×  plus.google.com                     | Model: Legit (0)    | Prawda: Phishing (1)
-       6×  borcuodeme.com                      | Model: Legit (0)    | Prawda: Phishing (1)
-       6×  home.earthlink.net                  | Model: Legit (0)    | Prawda: Phishing (1)
-       5×  pastebin.com                        | Model: Phishing (1) | Prawda: Legit (0)
-
-
-## set - 2
-### Metryki
--  Precision : 0.9887   (ile z 'phishing' to naprawdę phishing)
--  Recall    : 0.9098   (ile phishingów zostało wykrytych)
--  F1        : 0.9476
--  FPR       : 0.0046   (ile legit URL-i fałszywie oznaczono jako phishing)
-
-###  Błędy wysokiej pewności (|prob−0.5|>0.4)
--  Liczba: 5444 / 15266 błędów ogółem
-
-### F1 według długości URL
--  [  0– 50 znaków]  n=314,244  F1=0.9196
--  [ 50–100 znaków]  n=152,865  F1=0.9836
--  [100–150 znaków]  n= 18,789  F1=0.9924
--  [150–200 znaków]  n=  7,058  F1=0.9981
--  [200–999 znaków]  n=  4,461  F1=0.9963
-
-### Rozkład predykcji
--  [0.0–0.1]  n= 340,641  acc=0.985  ███████████████████████████
--  [0.1–0.2]  n=   8,078  acc=0.653  
--  [0.2–0.3]  n=   3,997  acc=0.477  
--  [0.3–0.4]  n=   2,701  acc=0.337  
--  [0.4–0.5]  n=   2,412  acc=0.249  
--  [0.5–0.6]  n=   2,577  acc=0.813  
--  [0.6–0.7]  n=   2,923  acc=0.880  
--  [0.7–0.8]  n=   3,775  acc=0.931  
--  [0.8–0.9]  n=   6,005  acc=0.962  
--  [0.9–1.0]  n= 124,354  acc=0.998  █████████
-
-### Top 10 domen w błędach (Domena | Model | Prawda)
-      84×  flowcode.com                        | Model: Legit (0)    | Prawda: Phishing (1)
-      39×  twitter.com                         | Model: Legit (0)    | Prawda: Phishing (1)
-      32×  facebook.com                        | Model: Phishing (1) | Prawda: Legit (0)
-      30×  cakeresume.com                      | Model: Legit (0)    | Prawda: Phishing (1)
-      27×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
-      23×  sites.google.com                    | Model: Legit (0)    | Prawda: Phishing (1)
-      18×  cf-ipfs.com                         | Model: Legit (0)    | Prawda: Phishing (1)
-      16×  jemi.so                             | Model: Legit (0)    | Prawda: Phishing (1)
-      16×  angelfire.com                       | Model: Legit (0)    | Prawda: Phishing (1)
-      15×  klrn.wpenginepowered.com            | Model: Legit (0)    | Prawda: Phishing (1)
-## set - 3
-### Metryki
--  Precision : 0.9559   (ile z 'phishing' to naprawdę phishing)
--  Recall    : 0.7988   (ile phishingów zostało wykrytych)
--  F1        : 0.8704
--  FPR       : 0.0318   (ile legit URL-i fałszywie oznaczono jako phishing)
-
-###  Błędy wysokiej pewności (|prob−0.5|>0.4)
--  Liczba: 29958 / 87598 błędów ogółem
-
-### F1 według długości URL
--  [  0– 50 znaków]  n=570,056  F1=0.8402
--  [ 50–100 znaków]  n=182,694  F1=0.9537
--  [100–150 znaków]  n= 25,912  F1=0.9791
--  [150–200 znaków]  n=  6,871  F1=0.9869
--  [200–999 znaków]  n=  9,325  F1=0.9946
-
-### Rozkład predykcji
--  [0.0–0.1]  n= 418,019  acc=0.942  █████████████████████
--  [0.1–0.2]  n=  27,847  acc=0.359  █
--  [0.2–0.3]  n=  17,122  acc=0.262  
--  [0.3–0.4]  n=  12,948  acc=0.215  
--  [0.4–0.5]  n=  11,417  acc=0.195  
--  [0.5–0.6]  n=  11,916  acc=0.833  
--  [0.6–0.7]  n=  12,993  acc=0.855  
--  [0.7–0.8]  n=  15,384  acc=0.881  
--  [0.8–0.9]  n=  23,253  acc=0.910  █
--  [0.9–1.0]  n= 244,047  acc=0.976  ████████████
-
-### Top 10 domen w błędach (Domena | Model | Prawda)
-     271×  babinet.cz                          | Model: Legit (0)    | Prawda: Phishing (1)
-     142×  home.comcast.net                    | Model: Legit (0)    | Prawda: Phishing (1)
-     141×  pastehtml.com                       | Model: Legit (0)    | Prawda: Phishing (1)
-      97×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
-      78×  angelfire.com                       | Model: Phishing (1) | Prawda: Legit (0)
-      68×  tools.ietf.org                      | Model: Phishing (1) | Prawda: Legit (0)
-      60×  storage.googleapis.com              | Model: Legit (0)    | Prawda: Phishing (1)
-      59×  "http:                              | Model: Phishing (1) | Prawda: Legit (0)
-      51×  fibtex.lodz.pl                      | Model: Phishing (1) | Prawda: Legit (0)
-      46×  globetrotter-games.com              | Model: Phishing (1) | Prawda: Legit (0)
-
-# CNN (NLP)
 ## SET - 1
 ### Metryki
--  Precision : 0.9805   (ile z 'phishing' to naprawdę phishing)
--  Recall    : 0.9546   (ile phishingów zostało wykrytych)
--  F1        : 0.9674
--  FPR       : 0.0053   (ile legit URL-i fałszywie oznaczono jako phishing)
+-  Precision : 0.9277   (ile z 'phishing' to naprawdę phishing)
+-  Recall    : 0.9404   (ile phishingów zostało wykrytych)
+-  F1        : 0.9340
+-  FPR       : 0.0207   (ile legit URL-i fałszywie oznaczono jako phishing)
 
 ###  Błędy wysokiej pewności (|prob−0.5|>0.4)
--  Liczba: 2010 / 6278 błędów ogółem
+-  Liczba: 125 / 12955 błędów ogółem
 ### F1 według długości URL
--  [  0– 50 znaków]  n=282,101  F1=0.9515
--  [ 50–100 znaków]  n=136,470  F1=0.9885
--  [100–150 znaków]  n= 17,188  F1=0.9946
--  [150–200 znaków]  n=  3,694  F1=0.9961
--  [200–999 znaków]  n=  3,727  F1=0.9970
+-  [  0– 50 znaków]  n=282,101  F1=0.9072
+-  [ 50–100 znaków]  n=136,470  F1=0.9678
+-  [100–150 znaków]  n= 17,188  F1=0.9835
+-  [150–200 znaków]  n=  3,694  F1=0.9910
+-  [200–999 znaków]  n=  3,727  F1=0.9939
 
 ### Rozkład predykcji
--  [0.0–0.1]  n= 336,437  acc=0.995  ██████████████████████████████
--  [0.1–0.2]  n=   6,553  acc=0.853  
--  [0.2–0.3]  n=   2,616  acc=0.730  
--  [0.3–0.4]  n=   1,544  acc=0.627  
--  [0.4–0.5]  n=   1,163  acc=0.516  
--  [0.5–0.6]  n=   1,264  acc=0.631  
--  [0.6–0.7]  n=   1,342  acc=0.720  
--  [0.7–0.8]  n=   1,577  acc=0.821  
--  [0.8–0.9]  n=   2,647  acc=0.875  
--  [0.9–1.0]  n=  88,061  acc=0.996  ███████
+-  [0.0–0.1]  n= 156,919  acc=1.000  ██████████████
+-  [0.1–0.2]  n=  98,994  acc=0.994  ████████
+-  [0.2–0.3]  n=  56,717  acc=0.975  █████
+-  [0.3–0.4]  n=  21,731  acc=0.922  █
+-  [0.4–0.5]  n=  10,037  acc=0.794  
+-  [0.5–0.6]  n=   7,474  acc=0.447  
+-  [0.6–0.7]  n=   7,184  acc=0.738  
+-  [0.7–0.8]  n=  10,362  acc=0.922  
+-  [0.8–0.9]  n=  20,627  acc=0.987  █
+-  [0.9–1.0]  n=  53,159  acc=0.999  ████
 
 ### Top 10 domen w błędach (Domena | Model | Prawda)
-      40×  twitter.com                         | Model: Legit (0)    | Prawda: Phishing (1)
-      24×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
-      18×  facebook.com                        | Model: Phishing (1) | Prawda: Legit (0)
-      18×  angelfire.com                       | Model: Legit (0)    | Prawda: Phishing (1)
-      13×  plus.google.com                     | Model: Legit (0)    | Prawda: Phishing (1)
-       9×  twitter.com                         | Model: Phishing (1) | Prawda: Legit (0)
-       9×  callmr.com                          | Model: Legit (0)    | Prawda: Phishing (1)
-       9×  sites.google.com                    | Model: Legit (0)    | Prawda: Phishing (1)
-       6×  ow.ly                               | Model: Phishing (1) | Prawda: Legit (0)
-       5×  q.gs                                | Model: Phishing (1) | Prawda: Legit (0)
+      75×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
+      45×  twitter.com                         | Model: Legit (0)    | Prawda: Phishing (1)
+      32×  angelfire.com                       | Model: Phishing (1) | Prawda: Legit (0)
+      29×  interment.net                       | Model: Phishing (1) | Prawda: Legit (0)
+      28×  encycl.opentopia.com                | Model: Phishing (1) | Prawda: Legit (0)
+      23×  twitter.com                         | Model: Phishing (1) | Prawda: Legit (0)
+      22×  associatepublisher.com              | Model: Phishing (1) | Prawda: Legit (0)
+      17×  support.microsoft.com               | Model: Phishing (1) | Prawda: Legit (0)
+      15×  worldpostjournal.com                | Model: Legit (0)    | Prawda: Phishing (1)
+      15×  meetwomen.com                       | Model: Legit (0)    | Prawda: Phishing (1)
 
 
 ## SET - 2
 ### Metryki
--  Precision : 0.9865   (ile z 'phishing' to naprawdę phishing)
--  Recall    : 0.8872   (ile phishingów zostało wykrytych)
--  F1        : 0.9342
--  FPR       : 0.0053   (ile legit URL-i fałszywie oznaczono jako phishing)
+-  Precision : 0.9521   (ile z 'phishing' to naprawdę phishing)
+-  Recall    : 0.9363   (ile phishingów zostało wykrytych)
+-  F1        : 0.9442
+-  FPR       : 0.0207   (ile legit URL-i fałszywie oznaczono jako phishing)
 
 ###  Błędy wysokiej pewności (|prob−0.5|>0.4)
--  Liczba: 8972 / 18970 błędów ogółem
+-  Liczba: 246 / 16805 błędów ogółem
 ### F1 według długości URL
--  [  0– 50 znaków]  n=314,244  F1=0.8962
--  [ 50–100 znaków]  n=152,865  F1=0.9827
--  [100–150 znaków]  n= 18,789  F1=0.9940
--  [150–200 znaków]  n=  7,058  F1=0.9967
--  [200–999 znaków]  n=  4,461  F1=0.9973
+-  [  0– 50 znaków]  n=314,244  F1=0.9181
+-  [ 50–100 znaków]  n=152,865  F1=0.9781
+-  [100–150 znaków]  n= 18,789  F1=0.9865
+-  [150–200 znaków]  n=  7,058  F1=0.9960
+-  [200–999 znaków]  n=  4,461  F1=0.9946
 
 ### Rozkład predykcji
--  [0.0–0.1]  n= 343,398  acc=0.975  ███████████████████████████
--  [0.1–0.2]  n=   9,276  acc=0.602  
--  [0.2–0.3]  n=   3,966  acc=0.481  
--  [0.3–0.4]  n=   2,453  acc=0.395  
--  [0.4–0.5]  n=   1,910  acc=0.314  
--  [0.5–0.6]  n=   2,037  acc=0.771  
--  [0.6–0.7]  n=   2,236  acc=0.832  
--  [0.7–0.8]  n=   2,673  acc=0.895  
--  [0.8–0.9]  n=   4,371  acc=0.924  
--  [0.9–1.0]  n= 125,143  acc=0.997  ██████████
+-  [0.0–0.1]  n= 157,041  acc=0.999  ████████████
+-  [0.1–0.2]  n=  99,624  acc=0.988  ████████
+-  [0.2–0.3]  n=  57,681  acc=0.959  ████
+-  [0.3–0.4]  n=  22,866  acc=0.876  █
+-  [0.4–0.5]  n=  11,038  acc=0.722  
+-  [0.5–0.6]  n=   8,761  acc=0.528  
+-  [0.6–0.7]  n=   9,462  acc=0.801  
+-  [0.7–0.8]  n=  14,689  acc=0.945  █
+-  [0.8–0.9]  n=  33,934  acc=0.992  ██
+-  [0.9–1.0]  n=  82,367  acc=0.999  ██████
 
 ### Top 10 domen w błędach (Domena | Model | Prawda)
-      96×  flowcode.com                        | Model: Legit (0)    | Prawda: Phishing (1)
-      52×  sites.google.com                    | Model: Legit (0)    | Prawda: Phishing (1)
-      40×  twitter.com                         | Model: Legit (0)    | Prawda: Phishing (1)
-      27×  jemi.so                             | Model: Legit (0)    | Prawda: Phishing (1)
-      24×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
-      23×  flow.page                           | Model: Legit (0)    | Prawda: Phishing (1)
-      19×  docs.google.com                     | Model: Legit (0)    | Prawda: Phishing (1)
-      18×  facebook.com                        | Model: Phishing (1) | Prawda: Legit (0)
-      18×  angelfire.com                       | Model: Legit (0)    | Prawda: Phishing (1)
-      17×  tinyurl.com                         | Model: Legit (0)    | Prawda: Phishing (1)
+      75×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
+      45×  twitter.com                         | Model: Legit (0)    | Prawda: Phishing (1)
+      32×  angelfire.com                       | Model: Phishing (1) | Prawda: Legit (0)
+      29×  interment.net                       | Model: Phishing (1) | Prawda: Legit (0)
+      28×  encycl.opentopia.com                | Model: Phishing (1) | Prawda: Legit (0)
+      23×  twitter.com                         | Model: Phishing (1) | Prawda: Legit (0)
+      22×  associatepublisher.com              | Model: Phishing (1) | Prawda: Legit (0)
+      17×  support.microsoft.com               | Model: Phishing (1) | Prawda: Legit (0)
+      15×  meetwomen.com                       | Model: Legit (0)    | Prawda: Phishing (1)
+      15×  worldpostjournal.com                | Model: Legit (0)    | Prawda: Phishing (1)
 
 
 ## SET - 3
 ### Metryki
--  Precision : 0.9553   (ile z 'phishing' to naprawdę phishing)
--  Recall    : 0.7898   (ile phishingów zostało wykrytych)
--  F1        : 0.8647
--  FPR       : 0.0318   (ile legit URL-i fałszywie oznaczono jako phishing)
+-  Precision : 0.9088   (ile z 'phishing' to naprawdę phishing)
+-  Recall    : 0.7017   (ile phishingów zostało wykrytych)
+-  F1        : 0.7919
+-  FPR       : 0.0608   (ile legit URL-i fałszywie oznaczono jako phishing)
 
 ###  Błędy wysokiej pewności (|prob−0.5|>0.4)
--  Liczba: 30769 / 90972 błędów ogółem
+-  Liczba: 7076 / 135744 błędów ogółem
 ### F1 według długości URL
--  [  0– 50 znaków]  n=570,056  F1=0.8317
--  [ 50–100 znaków]  n=182,694  F1=0.9560
--  [100–150 znaków]  n= 25,912  F1=0.9818
--  [150–200 znaków]  n=  6,871  F1=0.9893
--  [200–999 znaków]  n=  9,325  F1=0.9946
+-  [  0– 50 znaków]  n=570,056  F1=0.7342
+-  [ 50–100 znaków]  n=182,694  F1=0.9482
+-  [100–150 znaków]  n= 25,912  F1=0.9764
+-  [150–200 znaków]  n=  6,871  F1=0.9872
+-  [200–999 znaków]  n=  9,325  F1=0.9936
 
 ### Rozkład predykcji
--  [0.0–0.1]  n= 417,897  acc=0.941  █████████████████████
--  [0.1–0.2]  n=  30,261  acc=0.355  █
--  [0.2–0.3]  n=  18,655  acc=0.245  
--  [0.3–0.4]  n=  13,230  acc=0.211  
--  [0.4–0.5]  n=  10,614  acc=0.186  
--  [0.5–0.6]  n=  11,417  acc=0.829  
--  [0.6–0.7]  n=  11,976  acc=0.851  
--  [0.7–0.8]  n=  13,606  acc=0.872  
--  [0.8–0.9]  n=  20,320  acc=0.900  █
--  [0.9–1.0]  n= 246,970  acc=0.975  ████████████
+-  [0.0–0.1]  n= 176,113  acc=0.964  ████████
+-  [0.1–0.2]  n= 145,885  acc=0.778  ███████
+-  [0.2–0.3]  n=  98,160  acc=0.704  ████
+-  [0.3–0.4]  n=  54,331  acc=0.595  ██
+-  [0.4–0.5]  n=  36,248  acc=0.444  █
+-  [0.5–0.6]  n=  33,683  acc=0.675  █
+-  [0.6–0.7]  n=  34,257  acc=0.792  █
+-  [0.7–0.8]  n=  41,074  acc=0.888  ██
+-  [0.8–0.9]  n=  65,948  acc=0.963  ███
+-  [0.9–1.0]  n= 109,247  acc=0.993  █████
 
 ### Top 10 domen w błędach (Domena | Model | Prawda)
-     286×  pastehtml.com                       | Model: Legit (0)    | Prawda: Phishing (1)
-     133×  home.comcast.net                    | Model: Legit (0)    | Prawda: Phishing (1)
-      86×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
-      73×  storage.googleapis.com              | Model: Legit (0)    | Prawda: Phishing (1)
-      67×  painterspaintings.com               | Model: Legit (0)    | Prawda: Phishing (1)
-      66×  globetrotter-games.com              | Model: Phishing (1) | Prawda: Legit (0)
-      60×  ddj.com                             | Model: Phishing (1) | Prawda: Legit (0)
-      52×  babinet.cz                          | Model: Legit (0)    | Prawda: Phishing (1)
-      51×  fibtex.lodz.pl                      | Model: Phishing (1) | Prawda: Legit (0)
-      46×  microsoft.com                       | Model: Phishing (1) | Prawda: Legit (0)
+     672×  angelfire.com                       | Model: Phishing (1) | Prawda: Legit (0)
+     304×  pastehtml.com                       | Model: Legit (0)    | Prawda: Phishing (1)
+     156×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
+     126×  sourceforge.net                     | Model: Phishing (1) | Prawda: Legit (0)
+     117×  support.microsoft.com               | Model: Phishing (1) | Prawda: Legit (0)
+      85×  home.comcast.net                    | Model: Legit (0)    | Prawda: Phishing (1)
+      66×  members.tripod.com                  | Model: Phishing (1) | Prawda: Legit (0)
+      57×  w3.org                              | Model: Phishing (1) | Prawda: Legit (0)
+      51×  code.google.com                     | Model: Phishing (1) | Prawda: Legit (0)
+      50×  fibtex.lodz.pl                      | Model: Phishing (1) | Prawda: Legit (0)
 
 
 ## SET - 4
 ### Metryki
--  Precision : 0.1529   (ile z 'phishing' to naprawdę phishing)
--  Recall    : 0.8525   (ile phishingów zostało wykrytych)
--  F1        : 0.2593
--  FPR       : 0.2641   (ile legit URL-i fałszywie oznaczono jako phishing)
+-  Precision : 0.9523   (ile z 'phishing' to naprawdę phishing)
+-  Recall    : 0.9504   (ile phishingów zostało wykrytych)
+-  F1        : 0.9513
+-  FPR       : 0.0165   (ile legit URL-i fałszywie oznaczono jako phishing)
 
 ###  Błędy wysokiej pewności (|prob−0.5|>0.4)
--  Liczba: 99529 / 272302 błędów ogółem
+-  Liczba: 134 / 14934 błędów ogółem
 ### F1 według długości URL
--  [  0– 50 znaków]  n=1,040,321  F1=0.1981
--  [ 50–100 znaków]  n=  8,022  F1=0.9138
--  [100–150 znaków]  n=  1,852  F1=0.9788
--  [150–200 znaków]  n=  4,925  F1=0.9979
--  [200–999 znaków]  n=    770  F1=0.9921
+-  [  0– 50 znaków]  n=420,725  F1=0.9351
+-  [ 50–100 znaków]  n=144,404  F1=0.9740
+-  [100–150 znaków]  n= 19,044  F1=0.9872
+-  [150–200 znaków]  n=  8,626  F1=0.9969
+-  [200–999 znaków]  n=  4,487  F1=0.9950
 
 ### Rozkład predykcji
--  [0.0–0.1]  n= 287,322  acc=0.987  ██████████
--  [0.1–0.2]  n= 200,290  acc=0.991  ███████
--  [0.2–0.3]  n= 127,017  acc=0.992  ████
--  [0.3–0.4]  n=  77,538  acc=0.990  ██
--  [0.4–0.5]  n=  52,023  acc=0.986  █
--  [0.5–0.6]  n=  46,418  acc=0.018  █
--  [0.6–0.7]  n=  41,355  acc=0.023  █
--  [0.7–0.8]  n=  39,870  acc=0.029  █
--  [0.8–0.9]  n=  45,631  acc=0.043  █
--  [0.9–1.0]  n= 138,452  acc=0.309  █████
+-  [0.0–0.1]  n= 181,368  acc=1.000  ████████████
+-  [0.1–0.2]  n= 154,232  acc=0.995  ██████████
+-  [0.2–0.3]  n=  72,740  acc=0.974  ████
+-  [0.3–0.4]  n=  24,627  acc=0.907  █
+-  [0.4–0.5]  n=  11,092  acc=0.762  
+-  [0.5–0.6]  n=   8,437  acc=0.496  
+-  [0.6–0.7]  n=   8,713  acc=0.780  
+-  [0.7–0.8]  n=  14,160  acc=0.942  
+-  [0.8–0.9]  n=  31,432  acc=0.991  ██
+-  [0.9–1.0]  n=  90,534  acc=0.999  ██████
 
 ### Top 10 domen w błędach (Domena | Model | Prawda)
-     109×  docs.google.com                     | Model: Legit (0)    | Prawda: Phishing (1)
-      92×  flowcode.com                        | Model: Legit (0)    | Prawda: Phishing (1)
-      84×  linkin.bio                          | Model: Legit (0)    | Prawda: Phishing (1)
-      60×  sites.google.com                    | Model: Legit (0)    | Prawda: Phishing (1)
-      58×  linqapp.com                         | Model: Legit (0)    | Prawda: Phishing (1)
-      52×  us2.campaign-archive.com            | Model: Legit (0)    | Prawda: Phishing (1)
-      51×  us6.campaign-archive.com            | Model: Legit (0)    | Prawda: Phishing (1)
-      44×  us4.campaign-archive.com            | Model: Legit (0)    | Prawda: Phishing (1)
-      42×  us20.campaign-archive.com           | Model: Legit (0)    | Prawda: Phishing (1)
-      42×  us9.campaign-archive.com            | Model: Legit (0)    | Prawda: Phishing (1)
+      75×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
+      45×  twitter.com                         | Model: Legit (0)    | Prawda: Phishing (1)
+      32×  angelfire.com                       | Model: Phishing (1) | Prawda: Legit (0)
+      29×  interment.net                       | Model: Phishing (1) | Prawda: Legit (0)
+      28×  encycl.opentopia.com                | Model: Phishing (1) | Prawda: Legit (0)
+      23×  twitter.com                         | Model: Phishing (1) | Prawda: Legit (0)
+      22×  associatepublisher.com              | Model: Phishing (1) | Prawda: Legit (0)
+      17×  support.microsoft.com               | Model: Phishing (1) | Prawda: Legit (0)
+      15×  meetwomen.com                       | Model: Legit (0)    | Prawda: Phishing (1)
+      15×  worldpostjournal.com                | Model: Legit (0)    | Prawda: Phishing (1)
+
+
+# CNN (NLP):
+## SET - 1
+### Metryki
+-  Precision : 0.9340   (ile z 'phishing' to naprawdę phishing)
+-  Recall    : 0.9537   (ile phishingów zostało wykrytych)
+-  F1        : 0.9437
+-  FPR       : 0.0190   (ile legit URL-i fałszywie oznaczono jako phishing)
+
+###  Błędy wysokiej pewności (|prob−0.5|>0.4)
+-  Liczba: 119 / 11082 błędów ogółem
+### F1 według długości URL
+-  [  0– 50 znaków]  n=282,101  F1=0.9193
+-  [ 50–100 znaków]  n=136,470  F1=0.9765
+-  [100–150 znaków]  n= 17,188  F1=0.9873
+-  [150–200 znaków]  n=  3,694  F1=0.9924
+-  [200–999 znaków]  n=  3,727  F1=0.9946
+
+### Rozkład predykcji
+-  [0.0–0.1]  n= 205,001  acc=1.000  ██████████████████
+-  [0.1–0.2]  n=  72,003  acc=0.993  ██████
+-  [0.2–0.3]  n=  40,716  acc=0.973  ███
+-  [0.3–0.4]  n=  18,472  acc=0.923  █
+-  [0.4–0.5]  n=   7,475  acc=0.813  
+-  [0.5–0.6]  n=   5,161  acc=0.378  
+-  [0.6–0.7]  n=   5,948  acc=0.646  
+-  [0.7–0.8]  n=   8,474  acc=0.889  
+-  [0.8–0.9]  n=  16,281  acc=0.984  █
+-  [0.9–1.0]  n=  63,673  acc=0.999  █████
+
+### Top 10 domen w błędach (Domena | Model | Prawda)
+      72×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
+      44×  twitter.com                         | Model: Legit (0)    | Prawda: Phishing (1)
+      23×  twitter.com                         | Model: Phishing (1) | Prawda: Legit (0)
+      22×  google.com                          | Model: Phishing (1) | Prawda: Legit (0)
+      17×  facebook.com                        | Model: Phishing (1) | Prawda: Legit (0)
+      16×  loot.co.za                          | Model: Phishing (1) | Prawda: Legit (0)
+      14×  httpss:                             | Model: Phishing (1) | Prawda: Legit (0)
+      13×  4shared.com                         | Model: Phishing (1) | Prawda: Legit (0)
+      13×  plus.google.com                     | Model: Phishing (1) | Prawda: Legit (0)
+      12×  trade.mar.cx                        | Model: Phishing (1) | Prawda: Legit (0)
+
+
+## SET - 2
+### Metryki
+-  Precision : 0.9563   (ile z 'phishing' to naprawdę phishing)
+-  Recall    : 0.9478   (ile phishingów zostało wykrytych)
+-  F1        : 0.9520
+-  FPR       : 0.0190   (ile legit URL-i fałszywie oznaczono jako phishing)
+
+###  Błędy wysokiej pewności (|prob−0.5|>0.4)
+-  Liczba: 238 / 14490 błędów ogółem
+### F1 według długości URL
+-  [  0– 50 znaków]  n=314,244  F1=0.9288
+-  [ 50–100 znaków]  n=152,865  F1=0.9833
+-  [100–150 znaków]  n= 18,789  F1=0.9889
+-  [150–200 znaków]  n=  7,058  F1=0.9969
+-  [200–999 znaków]  n=  4,461  F1=0.9954
+
+### Rozkład predykcji
+-  [0.0–0.1]  n= 205,120  acc=0.999  ████████████████
+-  [0.1–0.2]  n=  72,618  acc=0.984  █████
+-  [0.2–0.3]  n=  41,609  acc=0.952  ███
+-  [0.3–0.4]  n=  19,446  acc=0.876  █
+-  [0.4–0.5]  n=   8,284  acc=0.733  
+-  [0.5–0.6]  n=   6,111  acc=0.475  
+-  [0.6–0.7]  n=   7,538  acc=0.721  
+-  [0.7–0.8]  n=  11,703  acc=0.920  
+-  [0.8–0.9]  n=  29,266  acc=0.991  ██
+-  [0.9–1.0]  n=  95,768  acc=0.999  ███████
+
+### Top 10 domen w błędach (Domena | Model | Prawda)
+      72×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
+      44×  twitter.com                         | Model: Legit (0)    | Prawda: Phishing (1)
+      23×  twitter.com                         | Model: Phishing (1) | Prawda: Legit (0)
+      21×  google.com                          | Model: Phishing (1) | Prawda: Legit (0)
+      19×  jemi.so                             | Model: Legit (0)    | Prawda: Phishing (1)
+      17×  facebook.com                        | Model: Phishing (1) | Prawda: Legit (0)
+      16×  loot.co.za                          | Model: Phishing (1) | Prawda: Legit (0)
+      14×  httpss:                             | Model: Phishing (1) | Prawda: Legit (0)
+      13×  plus.google.com                     | Model: Phishing (1) | Prawda: Legit (0)
+      13×  flipsnack.com                       | Model: Legit (0)    | Prawda: Phishing (1)
+
+
+## SET - 3
+### Metryki
+-  Precision : 0.9139   (ile z 'phishing' to naprawdę phishing)
+-  Recall    : 0.7317   (ile phishingów zostało wykrytych)
+-  F1        : 0.8127
+-  FPR       : 0.0595   (ile legit URL-i fałszywie oznaczono jako phishing)
+
+###  Błędy wysokiej pewności (|prob−0.5|>0.4)
+-  Liczba: 7746 / 124135 błędów ogółem
+### F1 według długości URL
+-  [  0– 50 znaków]  n=570,056  F1=0.7626
+-  [ 50–100 znaków]  n=182,694  F1=0.9512
+-  [100–150 znaków]  n= 25,912  F1=0.9806
+-  [150–200 znaków]  n=  6,871  F1=0.9880
+-  [200–999 znaków]  n=  9,325  F1=0.9944
+
+### Rozkład predykcji
+-  [0.0–0.1]  n= 230,449  acc=0.972  ███████████
+-  [0.1–0.2]  n= 118,147  acc=0.719  █████
+-  [0.2–0.3]  n=  79,395  acc=0.669  ███
+-  [0.3–0.4]  n=  45,330  acc=0.595  ██
+-  [0.4–0.5]  n=  26,895  acc=0.463  █
+-  [0.5–0.6]  n=  24,546  acc=0.649  █
+-  [0.6–0.7]  n=  32,577  acc=0.771  █
+-  [0.7–0.8]  n=  43,852  acc=0.884  ██
+-  [0.8–0.9]  n=  59,281  acc=0.950  ██
+-  [0.9–1.0]  n= 134,474  acc=0.990  ██████
+
+### Top 10 domen w błędach (Domena | Model | Prawda)
+     258×  tools.ietf.org                      | Model: Phishing (1) | Prawda: Legit (0)
+     245×  angelfire.com                       | Model: Phishing (1) | Prawda: Legit (0)
+     150×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
+     126×  home.comcast.net                    | Model: Legit (0)    | Prawda: Phishing (1)
+      92×  code.google.com                     | Model: Phishing (1) | Prawda: Legit (0)
+      73×  pastehtml.com                       | Model: Legit (0)    | Prawda: Phishing (1)
+      66×  painterspaintings.com               | Model: Legit (0)    | Prawda: Phishing (1)
+      65×  globetrotter-games.com              | Model: Phishing (1) | Prawda: Legit (0)
+      54×  w3.org                              | Model: Phishing (1) | Prawda: Legit (0)
+      51×  fibtex.lodz.pl                      | Model: Phishing (1) | Prawda: Legit (0)
+
+
+## SET - 4
+### Metryki
+-  Precision : 0.9558   (ile z 'phishing' to naprawdę phishing)
+-  Recall    : 0.9605   (ile phishingów zostało wykrytych)
+-  F1        : 0.9582
+-  FPR       : 0.0154   (ile legit URL-i fałszywie oznaczono jako phishing)
+
+###  Błędy wysokiej pewności (|prob−0.5|>0.4)
+-  Liczba: 132 / 12886 błędów ogółem
+### F1 według długości URL
+-  [  0– 50 znaków]  n=420,725  F1=0.9431
+-  [ 50–100 znaków]  n=144,404  F1=0.9807
+-  [100–150 znaków]  n= 19,044  F1=0.9900
+-  [150–200 znaków]  n=  8,626  F1=0.9974
+-  [200–999 znaków]  n=  4,487  F1=0.9954
+
+### Rozkład predykcji
+-  [0.0–0.1]  n= 229,780  acc=1.000  ███████████████
+-  [0.1–0.2]  n= 127,207  acc=0.995  ████████
+-  [0.2–0.3]  n=  56,469  acc=0.974  ███
+-  [0.3–0.4]  n=  21,243  acc=0.907  █
+-  [0.4–0.5]  n=   8,308  acc=0.780  
+-  [0.5–0.6]  n=   5,804  acc=0.424  
+-  [0.6–0.7]  n=   7,217  acc=0.697  
+-  [0.7–0.8]  n=  11,625  acc=0.917  
+-  [0.8–0.9]  n=  23,854  acc=0.989  █
+-  [0.9–1.0]  n= 105,828  acc=1.000  ███████
+
+### Top 10 domen w błędach (Domena | Model | Prawda)
+      72×  sites.google.com                    | Model: Phishing (1) | Prawda: Legit (0)
+      44×  twitter.com                         | Model: Legit (0)    | Prawda: Phishing (1)
+      23×  twitter.com                         | Model: Phishing (1) | Prawda: Legit (0)
+      21×  google.com                          | Model: Phishing (1) | Prawda: Legit (0)
+      17×  facebook.com                        | Model: Phishing (1) | Prawda: Legit (0)
+      16×  loot.co.za                          | Model: Phishing (1) | Prawda: Legit (0)
+      14×  httpss:                             | Model: Phishing (1) | Prawda: Legit (0)
+      13×  4shared.com                         | Model: Phishing (1) | Prawda: Legit (0)
+      13×  plus.google.com                     | Model: Phishing (1) | Prawda: Legit (0)
+      12×  trade.mar.cx                        | Model: Phishing (1) | Prawda: Legit (0)
+
 

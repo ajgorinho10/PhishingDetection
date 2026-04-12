@@ -29,8 +29,11 @@ class ImportSet4:
         df1 = df1.drop(df1.index[0])
 
         df2 = self.read_and_clear_data(self.data2_path, 0, ['id','url'])
+        from .Import_Set_1 import ImportSet1
+        set1 = ImportSet1()
+        df3 = set1.import_data()
         
-        df = pd.concat([df1, df2], ignore_index=True)
+        df = pd.concat([df1, df2, df3], ignore_index=True)
         df = df.sample(frac=1, random_state=42).reset_index(drop=True)
 
         df.drop_duplicates(subset=['url'], keep='first', inplace=True)
@@ -60,6 +63,7 @@ if __name__ == '__main__':
     x.import_data()
     
     print(x.df.head())
+    print(x.df['label'].value_counts())
     print("Ilość adresów url: ",x.df['url'].count())
     print("Ilość etykiet dla url: ",x.df['label'].count())
     
