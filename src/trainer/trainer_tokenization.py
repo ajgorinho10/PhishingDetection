@@ -41,7 +41,7 @@ class Trainer_Tokens(Trainer):
         else:
             dataset = TensorDataset(X_data, y_data)
             
-        dataloader = DataLoader(dataset, batch_size=self.cfg.BATCH_SIZE, shuffle = shuffled)
+        dataloader = DataLoader(dataset, batch_size=self.cfg.BATCH_SIZE, shuffle = shuffled, drop_last=shuffled)
         
         return dataloader
     

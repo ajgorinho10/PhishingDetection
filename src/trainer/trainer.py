@@ -36,8 +36,11 @@ class FocalLoss(nn.Module):
 
     def forward(self, inputs, targets):
         bce_loss = F.binary_cross_entropy_with_logits(inputs, targets, reduction='none')
-        pt = torch.exp(-bce_loss) 
-        focal_loss = self.alpha * (1 - pt) ** self.gamma * bce_loss
+        pt = torch.exp(-bce_loss)
+        
+        alpha_t = targets * self.alpha + (1 - targets) * (1 - self.alpha)
+        
+        focal_loss = alpha_t * ((1 - pt) ** self.gamma) * bce_loss
         return focal_loss.mean()
 
 class Trainer:
@@ -58,7 +61,8 @@ class Trainer:
             self.optimizer = None
             self.scheduler = None
             
-        self.loss_f = FocalLoss(alpha=0.25, gamma=2.0)
+        #self.loss_f = FocalLoss(alpha=0.25, gamma=2.0)
+        self.loss_f = nn.BCEWithLogitsLoss()
         self.early_stopping = EarlyStopping(patience=cfg.PATIENCE, min_delta=0.001, path = cfg.PATH)
         
         self.history = {'train_loss': [], 'val_loss': [], 'f1': [], 'acc': [], 'recal': []}

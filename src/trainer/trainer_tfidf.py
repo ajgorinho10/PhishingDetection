@@ -47,7 +47,7 @@ class Trainer_TfIDF(Trainer):
     def get_data_loaders(self, X_sparse, y, X_features=None, shuffled=False):
         # Używamy naszej nowej, chroniącej RAM klasy SparseDataset
         train_dataset = SparseDataset(X_sparse, y, X_features)
-        train_loader = DataLoader(train_dataset, batch_size=self.cfg.BATCH_SIZE, shuffle=shuffled)
+        train_loader = DataLoader(train_dataset, batch_size=self.cfg.BATCH_SIZE, shuffle=shuffled, drop_last=shuffled)
         return train_loader
         
     def splits_data_to_Train_Val_Test(self):
