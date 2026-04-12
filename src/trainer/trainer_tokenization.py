@@ -36,7 +36,7 @@ class Trainer_Tokens(Trainer):
     def get_data_loaders(self, X_data, y_data, X_features = None, shuffled = False):
         dataset = None
         
-        if self.use_features and X_features != None:
+        if self.use_features and X_features is not None:
             dataset = TensorDataset(X_data, X_features, y_data)
         else:
             dataset = TensorDataset(X_data, y_data)

@@ -334,10 +334,10 @@ def test_model_Transformer():
     
     diagnoze_at_all_sets(trainer)
 
-#test_model_CNN_LSTM()
+test_model_CNN_LSTM()
 #test_model_CNN()
 #test_model_MLP()
 #test_model_LSTM()
-test_model_XGBoots()
+#test_model_XGBoots()
 #test_model_Transformer() 
 

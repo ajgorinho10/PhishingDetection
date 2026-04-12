@@ -128,7 +128,7 @@ class Trainer:
                 
             self.optimizer.zero_grad(set_to_none=True)
             output = self.model(batch_X)
-            loss = self.loss_f(output, batch_y)
+            loss = self.loss_f(output.view(-1), batch_y.float().view(-1))
             loss.backward()
                 
             nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
@@ -150,7 +150,7 @@ class Trainer:
                 
             self.optimizer.zero_grad(set_to_none=True)
             output = self.model(batch_X, batch_features)
-            loss = self.loss_f(output, batch_y)
+            loss = self.loss_f(output.view(-1), batch_y.float().view(-1))
             loss.backward()
                 
             
@@ -176,7 +176,7 @@ class Trainer:
             for batch_X, batch_y in data_loader:
                 batch_X, batch_y = batch_X.to(self.cfg.DEVICE), batch_y.to(self.cfg.DEVICE)
                 output = self.model(batch_X)
-                loss = self.loss_f(output, batch_y)
+                loss = self.loss_f(output.view(-1), batch_y.float().view(-1))
                 running_val_loss += loss.item()
 
                 running_labels.extend(batch_y.cpu().numpy().flatten())
@@ -202,7 +202,7 @@ class Trainer:
             for batch_X, batch_features, batch_y in data_loader:
                 batch_X, batch_features, batch_y = batch_X.to(self.cfg.DEVICE), batch_features.to(self.cfg.DEVICE), batch_y.to(self.cfg.DEVICE)
                 output = self.model(batch_X, batch_features)
-                loss = self.loss_f(output, batch_y)
+                loss = self.loss_f(output.view(-1), batch_y.float().view(-1))
                 running_val_loss += loss.item()
 
                 running_labels.extend(batch_y.cpu().numpy().flatten())

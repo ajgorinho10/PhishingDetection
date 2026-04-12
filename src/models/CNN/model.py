@@ -40,6 +40,11 @@ class CNNBlocks(nn.Module):
         
     def forward(self, x, mask=None):
         x = self.conv(x)
+        
+        if mask is not None:
+            mask_expanded = mask.unsqueeze(1)
+            x = x.masked_fill(mask_expanded, 0.0)
+            
         x = self.se(x, mask)
         x = self.sa(x, mask)
         

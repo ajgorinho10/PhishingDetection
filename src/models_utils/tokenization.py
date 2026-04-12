@@ -19,7 +19,6 @@ class CharTokenizer:
 
     def encode(self, url: str) -> List[int]:
         """URL → lista indeksów. Przy przekroczeniu max_len wycina środek."""
-        url = url.lower()
         if len(url) > self.max_len:
             # Zostawia np. pierwsze 40 znaków i resztę uzupełnia końcówką
             keep_front = 40

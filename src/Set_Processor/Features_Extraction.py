@@ -114,9 +114,7 @@ class FeaturesExtraction:
         url_str = str(url)
         digits = sum(c.isdigit() for c in url_str)
         letters = sum(c.isalpha() for c in url_str)
-        if letters == 0:
-            return digits # Zabezpieczenie przed dzieleniem przez zero
-        return digits / letters
+        return digits / (letters + 1e-5)
 
     def keyword_in_subdomain(self, url):
         domain = self._get_domain(self._parse_url(url))
