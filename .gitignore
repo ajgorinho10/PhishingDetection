@@ -3,5 +3,11 @@
 .vscode
 __pycache__
 test
-data/raw/
-data/processed/
+data/set1/raw/
+data/set1/processed/
+data/set2/raw/
+data/set2/processed/
+data/set3/raw/
+data/set3/processed/
+data/set4/raw/
+data/set4/processed/
