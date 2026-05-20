@@ -33,7 +33,19 @@ class ModelTokens:
             data_loader = trainer.get_data_loaders(*trainer.get_tokenized_tensors(X, y), shuffled=False)
             
         trainer.evaluate(data_loader)
-               
+
+  
+    def load_model(self):
+        from trainer import Trainer_Tokens
+        
+        scaler = None
+        if self.cfg.USE_FEATURES:
+            scaler = joblib.load(self.cfg.SCALER_PATH)
+            
+        self.load_state_dict(torch.load(self.cfg.PATH))
+        
+        return scaler
+            
         
         
 class ModelTfIDF:
