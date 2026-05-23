@@ -333,11 +333,29 @@ def test_model_Transformer():
         trainer.scaler = joblib.load(cfg.SCALER_PATH)
     
     diagnoze_at_all_sets(trainer)
+    
+def test_model_DistilBERT():
+    from models.transformers.model import DistilBERT_Model
+    from models.transformers.config import cfg
+    from trainer import Trainer_DistilBERT
+    
+    model = DistilBERT_Model(cfg)
+    model.load_state_dict(torch.load(cfg.PATH, weights_only=True))
+    
+    trainer = Trainer_DistilBERT(model, cfg)
+    
+    if cfg.USE_FEATURES:
+        trainer.load_scaler()
+    
+    diagnoze_at_all_sets(trainer)
 
-test_model_CNN_LSTM()
+test_model_DistilBERT()
+
+#test_model_CNN_LSTM()
 #test_model_CNN()
 #test_model_MLP()
 #test_model_LSTM()
 #test_model_XGBoots()
-#test_model_Transformer() 
+#test_model_Transformer()
+test_model_DistilBERT()
 

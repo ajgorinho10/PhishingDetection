@@ -11,3 +11,4 @@ data/set_3/raw/
 data/set_3/processed/
 data/set_4/raw/
 data/set_4/processed/
+src/models/transformers/best.pth
