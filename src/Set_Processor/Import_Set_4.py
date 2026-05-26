@@ -63,8 +63,7 @@ if __name__ == '__main__':
     x.import_data()
     
     print(x.df.head())
-    print(x.df['label'].value_counts())
-    print("Ilość adresów url: ",x.df['url'].count())
-    print("Ilość etykiet dla url: ",x.df['label'].count())
+    print("Rozkład klas:",x.df['label'].value_counts())
+    print("Ilosc danych:",x.df.count())
     
     x.df.to_csv(x.processed_path,index=False)
