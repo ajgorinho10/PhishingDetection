@@ -1,0 +1,30 @@
+Epoka: [1/20]  | Train Loss: 0.1703  | Val Loss: 0.0923  | Val F1: 0.9384  | Val Acc: 0.9693  | Val Recal: 0.9158
+Epoka: [2/20]  | Train Loss: 0.0881  | Val Loss: 0.0822  | Val F1: 0.9459  | Val Acc: 0.9725  | Val Recal: 0.9414
+Epoka: [3/20]  | Train Loss: 0.0755  | Val Loss: 0.0782  | Val F1: 0.9490  | Val Acc: 0.9748  | Val Recal: 0.9181
+Epoka: [4/20]  | Train Loss: 0.0675  | Val Loss: 0.0825  | Val F1: 0.9476  | Val Acc: 0.9729  | Val Recal: 0.9588
+Epoka: [5/20]  | Train Loss: 0.0613  | Val Loss: 0.0704  | Val F1: 0.9538  | Val Acc: 0.9765  | Val Recal: 0.9524
+Epoka: [6/20]  | Train Loss: 0.0560  | Val Loss: 0.0643  | Val F1: 0.9585  | Val Acc: 0.9791  | Val Recal: 0.9434
+Epoka: [7/20]  | Train Loss: 0.0528  | Val Loss: 0.0735  | Val F1: 0.9534  | Val Acc: 0.9770  | Val Recal: 0.9201
+Epoka: [8/20]  | Train Loss: 0.0478  | Val Loss: 0.0661  | Val F1: 0.9585  | Val Acc: 0.9793  | Val Recal: 0.9375
+Epoka: [9/20]  | Train Loss: 0.0444  | Val Loss: 0.0769  | Val F1: 0.9516  | Val Acc: 0.9748  | Val Recal: 0.9702
+Epoka: [10/20]  | Train Loss: 0.0413  | Val Loss: 0.0605  | Val F1: 0.9640  | Val Acc: 0.9818  | Val Recal: 0.9551
+Epoka: [11/20]  | Train Loss: 0.0381  | Val Loss: 0.0694  | Val F1: 0.9582  | Val Acc: 0.9793  | Val Recal: 0.9294
+Epoka: [12/20]  | Train Loss: 0.0350  | Val Loss: 0.0621  | Val F1: 0.9629  | Val Acc: 0.9814  | Val Recal: 0.9456
+Epoka: [13/20]  | Train Loss: 0.0319  | Val Loss: 0.0614  | Val F1: 0.9637  | Val Acc: 0.9816  | Val Recal: 0.9586
+Epoka: [14/20]  | Train Loss: 0.0294  | Val Loss: 0.0632  | Val F1: 0.9642  | Val Acc: 0.9819  | Val Recal: 0.9539
+Epoka: [15/20]  | Train Loss: 0.0266  | Val Loss: 0.0642  | Val F1: 0.9641  | Val Acc: 0.9818  | Val Recal: 0.9585
+Zatrzymano trening wcześnie w epoce 15. Brak poprawy funkcji straty.
+Załadowano optymalne wagi do modelu.
+
+Raport końcowy:
+              precision    recall  f1-score   support
+
+         0.0       0.98      0.99      0.99     66533
+         1.0       0.97      0.95      0.96     23067
+
+    accuracy                           0.98     89600
+   macro avg       0.98      0.97      0.98     89600
+weighted avg       0.98      0.98      0.98     89600
+
+[[65927   606]
+ [ 1062 22005]]

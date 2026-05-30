@@ -262,7 +262,7 @@ class Trainer:
                 break
                 
         self.evaluate(test_loader)
-        #self.plot_history()
+        self.plot_history()
         
         
     def plot_history(self):

@@ -1,0 +1,20 @@
+Epoka: [1/20]  | Train Loss: 0.1489  | Val Loss: 0.0899  | Val F1: 0.9404  | Val Acc: 0.9699  | Val Recal: 0.9294
+Epoka: [2/20]  | Train Loss: 0.0804  | Val Loss: 0.0916  | Val F1: 0.9384  | Val Acc: 0.9680  | Val Recal: 0.9546
+Epoka: [3/20]  | Train Loss: 0.0661  | Val Loss: 0.0688  | Val F1: 0.9558  | Val Acc: 0.9778  | Val Recal: 0.9426
+Epoka: [4/20]  | Train Loss: 0.0573  | Val Loss: 0.0847  | Val F1: 0.9442  | Val Acc: 0.9727  | Val Recal: 0.9033
+Epoka: [5/20]  | Train Loss: 0.0499  | Val Loss: 0.0688  | Val F1: 0.9575  | Val Acc: 0.9788  | Val Recal: 0.9336
+Zatrzymano trening wcześnie w epoce 5. Brak poprawy funkcji straty.
+Załadowano optymalne wagi do modelu.
+
+Raport końcowy:
+              precision    recall  f1-score   support
+
+         0.0       0.98      0.99      0.98     66533
+         1.0       0.97      0.94      0.96     23067
+
+    accuracy                           0.98     89600
+   macro avg       0.97      0.97      0.97     89600
+weighted avg       0.98      0.98      0.98     89600
+
+[[65809   724]
+ [ 1310 21757]]

@@ -3,6 +3,8 @@ import scipy.sparse as sp
 import numpy as np
 from sklearn.model_selection import train_test_split
 from .trainer_tfidf import Trainer_TfIDF
+import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score, f1_score, recall_score
 
 class Trainer_XGB(Trainer_TfIDF):
     def __init__(self, model_wrapper, cfg, dataset=None):
@@ -43,8 +45,51 @@ class Trainer_XGB(Trainer_TfIDF):
         
         self.model_wrapper.model.fit(
             X_train_final, y_train_np,
-            eval_set=[(X_val_final, y_val_np)],
-            verbose=50 
+            eval_set=[(X_train_final, y_train_np), (X_val_final, y_val_np)],
+            verbose=50
         )
-        
         self.model_wrapper.save(self.cfg.PATH)
+
+        # 2. Pobranie historii Loss
+        results = self.model_wrapper.model.evals_result()
+        metric_name = list(results['validation_0'].keys())[0]
+        train_loss = results['validation_0'][metric_name]
+        val_loss = results['validation_1'][metric_name]
+        epochs = range(len(train_loss))
+
+        # 3. Obliczenie metryk na zbiorze walidacyjnym (dla finalnego modelu)
+        y_val_pred = self.model_wrapper.model.predict(X_val_final)
+        
+        # Używamy average='weighted', aby kod działał poprawnie zarówno dla klasyfikacji binarnej, jak i wieloklasowej
+        acc = accuracy_score(y_val_np, y_val_pred)
+        f1 = f1_score(y_val_np, y_val_pred, average='weighted')
+        rec = recall_score(y_val_np, y_val_pred, average='weighted')
+
+        # 4. Generowanie wykresów (1 wiersz, 2 kolumny)
+        import matplotlib.pyplot as plt
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+        # --- Wykres 1: Train & Val Loss ---
+        ax1.plot(epochs, train_loss, label='Train Loss', color='blue')
+        ax1.plot(epochs, val_loss, label='Validation Loss', color='orange')
+        ax1.set_xlabel('Iteracje (Liczba drzew)')
+        ax1.set_ylabel(f'Błąd ({metric_name})')
+        ax1.set_title('Krzywa uczenia XGBoost')
+        ax1.legend()
+        ax1.grid(True)
+
+        # --- Wykres 2: Accuracy, F1, Recall ---
+        metrics_names = ['Accuracy', 'F1 Score', 'Recall']
+        metrics_values = [acc, f1, rec]
+        bars = ax2.bar(metrics_names, metrics_values, color=['#4CAF50', '#2196F3', '#FF9800'])
+        ax2.set_ylim(0, 1.1) # Wymuszenie skali 0-1
+        ax2.set_title('Metryki końcowe na zbiorze walidacyjnym')
+        ax2.set_ylabel('Wartość')
+
+        # Dodanie etykiet liczbowych nad słupkami
+        for bar in bars:
+            yval = bar.get_height()
+            ax2.text(bar.get_x() + bar.get_width()/2, yval + 0.02, round(yval, 4), ha='center', va='bottom')
+
+        plt.tight_layout()
+        plt.show()

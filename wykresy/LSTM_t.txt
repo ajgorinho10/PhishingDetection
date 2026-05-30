@@ -1,0 +1,29 @@
+Epoka: [1/20]  | Train Loss: 0.2130  | Val Loss: 0.1187  | Val F1: 0.9195  | Val Acc: 0.9595  | Val Recal: 0.9056
+Epoka: [2/20]  | Train Loss: 0.1033  | Val Loss: 0.1096  | Val F1: 0.9260  | Val Acc: 0.9613  | Val Recal: 0.9499
+Epoka: [3/20]  | Train Loss: 0.0861  | Val Loss: 0.0816  | Val F1: 0.9452  | Val Acc: 0.9726  | Val Recal: 0.9235
+Epoka: [4/20]  | Train Loss: 0.0756  | Val Loss: 0.0758  | Val F1: 0.9506  | Val Acc: 0.9754  | Val Recal: 0.9283
+Epoka: [5/20]  | Train Loss: 0.0680  | Val Loss: 0.0698  | Val F1: 0.9552  | Val Acc: 0.9775  | Val Recal: 0.9388
+Epoka: [6/20]  | Train Loss: 0.0602  | Val Loss: 0.0686  | Val F1: 0.9563  | Val Acc: 0.9780  | Val Recal: 0.9413
+Epoka: [7/20]  | Train Loss: 0.0558  | Val Loss: 0.0677  | Val F1: 0.9576  | Val Acc: 0.9788  | Val Recal: 0.9396
+Epoka: [8/20]  | Train Loss: 0.0503  | Val Loss: 0.0664  | Val F1: 0.9600  | Val Acc: 0.9800  | Val Recal: 0.9415
+Epoka: [9/20]  | Train Loss: 0.0462  | Val Loss: 0.0646  | Val F1: 0.9600  | Val Acc: 0.9798  | Val Recal: 0.9510
+Epoka: [10/20]  | Train Loss: 0.0424  | Val Loss: 0.0654  | Val F1: 0.9613  | Val Acc: 0.9804  | Val Recal: 0.9534
+Epoka: [11/20]  | Train Loss: 0.0386  | Val Loss: 0.0660  | Val F1: 0.9617  | Val Acc: 0.9806  | Val Recal: 0.9553
+Epoka: [12/20]  | Train Loss: 0.0354  | Val Loss: 0.0683  | Val F1: 0.9624  | Val Acc: 0.9809  | Val Recal: 0.9559
+Epoka: [13/20]  | Train Loss: 0.0324  | Val Loss: 0.0698  | Val F1: 0.9627  | Val Acc: 0.9813  | Val Recal: 0.9480
+Epoka: [14/20]  | Train Loss: 0.0300  | Val Loss: 0.0738  | Val F1: 0.9614  | Val Acc: 0.9807  | Val Recal: 0.9415
+Zatrzymano trening wcześnie w epoce 14. Brak poprawy funkcji straty.
+Załadowano optymalne wagi do modelu.
+
+Raport końcowy:
+              precision    recall  f1-score   support
+
+         0.0       0.98      0.99      0.99     66533
+         1.0       0.97      0.95      0.96     23067
+
+    accuracy                           0.98     89600
+   macro avg       0.98      0.97      0.97     89600
+weighted avg       0.98      0.98      0.98     89600
+
+[[65795   738]
+ [ 1144 21923]]
