@@ -1,7 +1,7 @@
 import torch
 
 class Config:
-    USE_FEATURES = True
+    USE_FEATURES = False
     FEATURES_LEN = 8
 
     # POPRAWKA: 128 zamiast 200 — WordPiece tokenizuje URL do ~10-30 tokenów,
