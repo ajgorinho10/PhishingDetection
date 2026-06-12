@@ -1,42 +1,51 @@
-from models_utils import CharTokenizer
-from models.transformers import cfg
-from models.transformers.model import Transformer as model1
-from trainer import Trainer_Tokens
-
+import streamlit as st
 import torch
+from transformers import DistilBertTokenizer
+from models.transformers.config import cfg
+from models.transformers.model import DistilBERT_Model
 
-tokenizer = CharTokenizer()
-model = model1(cfg)
-scaler = model.load_model()
-model.eval()
-model.to(cfg.DEVICE)
-trainer = Trainer_Tokens(model, cfg, None)
-
-user_input = None
-while True:
-    user_input = input("Wprowadź url:")
+@st.cache_resource
+def load_system():
+    tokenizer = DistilBertTokenizer.from_pretrained(cfg.MODEL_NAME)
+    model = DistilBERT_Model(cfg)
+    wagi = torch.load(cfg.PATH, map_location=cfg.DEVICE)
+    model.load_state_dict(wagi)
+    model.eval()
+    model.to(cfg.DEVICE)
     
-    if user_input == "exit": break
-    
-    text_tokenized = tokenizer.encode(user_input)
-    text_tokenized_tensor = torch.tensor(text_tokenized, dtype=torch.long).unsqueeze(0).to(cfg.DEVICE)
-    X_features_tensor = None
+    return tokenizer, model
 
-    if cfg.USE_FEATURES:
+tokenizer, model = load_system()
 
-        X_features = trainer.get_data_features([text_tokenized])
-        X_features_tensor = torch.tensor(X_features.numpy(), dtype=torch.float32).to(cfg.DEVICE)
+st.title("Weryfikator Adresów URL")
+st.write("Wykrywanie phishingowych adresów URL przy użyciu architektury Transformer.")
 
-    with torch.no_grad():
-        output_raw = None
-        if cfg.USE_FEATURES:
-            output_raw = model(text_tokenized_tensor, X_features_tensor)
+with st.form("skaner_form"):
+    user_input = st.text_input("Wprowadź adres URL do analizy:")
+    submit_button = st.form_submit_button("Skanuj adres")
+
+if submit_button:
+    if user_input:
+        inputs = tokenizer(
+            user_input,
+            return_tensors="pt",
+            max_length=cfg.MAX_LEN,
+            padding="max_length",
+            truncation=True
+        )
+        
+        input_ids = inputs["input_ids"].to(cfg.DEVICE)
+        attention_mask = inputs["attention_mask"].to(cfg.DEVICE)
+
+        with torch.no_grad():
+            output_raw = model(input_ids, attention_mask)
+            output = torch.sigmoid(output_raw).squeeze(-1)
+            prob = output.item()
+
+        st.subheader("Wynik analizy:")
+        if prob > 0.5:
+            st.error(f"Adres niebezpieczny. Prawdopodobieństwo phishingu: {prob:.4f}")
         else:
-            output_raw = model(text_tokenized_tensor)
-            
-        output = torch.sigmoid(output_raw).squeeze(-1)
-
-    print(output)
-
-
-
+            st.success(f"Adres bezpieczny. Prawdopodobieństwo phishingu: {prob:.4f}")
+    else:
+        st.warning("Proszę wprowadzić adres URL.")

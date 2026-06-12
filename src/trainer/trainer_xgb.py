@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from .trainer_tfidf import Trainer_TfIDF
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, f1_score, recall_score
+import time
 
 class Trainer_XGB(Trainer_TfIDF):
     def __init__(self, model_wrapper, cfg, dataset=None):
@@ -43,11 +44,14 @@ class Trainer_XGB(Trainer_TfIDF):
         y_train_np = (y_train.values if hasattr(y_train, 'values') else np.array(y_train)).flatten().astype(np.float32)
         y_val_np   = (y_val.values if hasattr(y_val, 'values') else np.array(y_val)).flatten().astype(np.float32)
         
+        start_time = time.time()
         self.model_wrapper.model.fit(
             X_train_final, y_train_np,
             eval_set=[(X_train_final, y_train_np), (X_val_final, y_val_np)],
             verbose=50
         )
+        end_time = time.time()
+        print(f'Czas trenowania: {(end_time-start_time):.2f}')
         self.model_wrapper.save(self.cfg.PATH)
 
         # 2. Pobranie historii Loss

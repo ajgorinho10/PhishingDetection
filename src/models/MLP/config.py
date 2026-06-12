@@ -20,7 +20,7 @@ class Config:
     LR            = 1e-3
     PATIENCE      = 2            
 
-    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+    DEVICE = "cuda" if torch.cuda.is_available() == True else "cpu"
     PATH = 'models/MLP/best.pth'
     SCALER_PATH = 'models/MLP/scaler.pkl'
     FTIDF_PATH = 'models/MLP/ftidf.pkl'

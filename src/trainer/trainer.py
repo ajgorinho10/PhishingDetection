@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import math
+import time
 
 import torch
 import torch.nn as nn
@@ -51,6 +52,8 @@ class Trainer:
         self.cfg = cfg
         self.use_features = cfg.USE_FEATURES
         self.scaler = StandardScaler()
+        
+        print(f'Trenowanie na {cfg.DEVICE}')
         
         if hasattr(self.model, 'parameters'):
             self.optimizer  = torch.optim.AdamW(self.model.parameters(), lr=cfg.LR, weight_decay=1e-4)
@@ -227,6 +230,7 @@ class Trainer:
             total_steps = len(train_loader) * self.cfg.EPOCHS
             self.scheduler = get_scheduler(self.optimizer,self.cfg.WARMUP_STEPS,total_steps)
 
+        start_time = time.time()
         for epoch in range(self.cfg.EPOCHS):
             if self.use_features:
                 avg_train_loss  = self._train_epoch_with_features(train_loader)
@@ -260,7 +264,8 @@ class Trainer:
             if self.early_stopping.early_stop:
                 print(f"Zatrzymano trening wcześnie w epoce {epoch+1}. Brak poprawy funkcji straty.")
                 break
-                
+        end_time = time.time()
+        print(f'Czas trenowania: {(end_time-start_time):.2f}')
         self.evaluate(test_loader)
         self.plot_history()
         
