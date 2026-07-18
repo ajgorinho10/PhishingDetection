@@ -1,7 +1,11 @@
 # Opis
 Celem projektu jest wykrycie ataków pishingowych na podstawie adresów URL. 
 Repozutorium zawiera stworzone modele uczenia maszynowego przy użyciu języka Python oraz bibliotek Scikit-learn i Pytorch. Głębokie modele zostały uzupełnione o warstwy uwagi.
+Dodatkowo w każdym z modeli przetestowano dodanie ręcznie wyekstrahowanych cech w warstwie klasyfikacji.
 Dokłdane wyniki algorytmów znajdują się w folderach 'wyniki' i 'wykresy'.
+
+# Przetwarzane dane
+Klasyczne algorytmy wykorzustują cechy wyznaczone przez algorytm TF-IDF, natomiast pozostałe tokenizacje na poziomie znaków.
 
 # Modele:
 - CNN_LSTM
@@ -11,6 +15,13 @@ Dokłdane wyniki algorytmów znajdują się w folderach 'wyniki' i 'wykresy'.
 - XGBoost
 - Transformer
 
+# Zbiory danych
+* Zbiór nr 1 - Treningowy (2024r)
+* Zbiór nr 2 - Walidacyjny (2024r)
+* Zbiór nr 3 - Walidacyjny (2022r)
+* Zbiór nr 4 - Trenningowy (2026r)
+
+# Wartości współczynnika F1
 | Architektura Modelu | Zbiór 1 | Zbiór 2 | Zbiór 3 | Zbiór 4 |
 |---|---|---|---|---|
 | CNN (Cechy) | 0.9340 | 0.9442 | 0.7919 | 0.9513 |
